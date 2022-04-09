@@ -1,13 +1,11 @@
 // DOCS: https://stackoverflow.com/a/51231100/748503
-
 function resizeCanvas(canvas) {
     canvas.width  = window.innerWidth;
     canvas.height = window.innerHeight;
 }
-function drawCanvas(rgbaFn) {
+function drawCanvas(canvas, rgbaFn) {
     let timeStart = performance.now();
 
-    let canvas = document.getElementById('rainbow');
     let ctx    = canvas.getContext('2d');
     resizeCanvas(canvas)
 

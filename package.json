@@ -1,0 +1,26 @@
+{
+  "name": "fractals",
+  "version": "1.0.0",
+  "description": "HTML Fractals",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JamesMcGuigan/fractals.git"
+  },
+  "keywords": [
+    "fractal"
+  ],
+  "author": "James McGuigan <james.mcguigan@gmail.com>",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/JamesMcGuigan/fractals/issues"
+  },
+  "homepage": "https://github.com/JamesMcGuigan/fractals#readme",
+  "dependencies": {
+    "mathjs": "^10.4.3",
+    "color-convert": "^2.0.1"
+  }
+}
