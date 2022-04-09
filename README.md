@@ -1,2 +1,2 @@
-# fractals
-HTML Fracrals
+# HTML Fracrals
+https://fractals.jamesmcguigan.com
