@@ -4,7 +4,8 @@
   "description": "HTML Fractals",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "vendor": "cp -vf node_modules/mathjs/dist/math.js vendor/"
   },
   "repository": {
     "type": "git",
