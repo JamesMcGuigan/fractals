@@ -15,8 +15,11 @@ function mandelbrot(c) {
     return n;
 }
 function mandelbrotPercent([x,y]) {
-    let xx = x/canvas.width  * 2*scale - scale - 1;
-    let yy = y/canvas.height * 2*scale - scale;
+    let unit     = Math.min(canvas.height, canvas.width);
+    let offset_x = Math.max( 0, (canvas.width  - canvas.height)/2 ) / unit * scale;
+    let offset_y = Math.max( 0, (canvas.height - canvas.width )/2 ) / unit * scale;
+    let xx = x/unit * 2*scale - scale - offset_x - 1;
+    let yy = y/unit * 2*scale - scale - offset_y;
     let c  = math.complex(xx,yy);
     let n  = mandelbrot(c);
     let pc = 1 - Math.min( n / depth, 1);
