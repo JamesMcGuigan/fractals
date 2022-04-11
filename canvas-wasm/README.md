@@ -16,7 +16,8 @@ emsdk --help
 
 ## Install wasm2wat
 ```
-sudo pacman -S wabt
+sudo pacman -S wabt       # wasm2wat
+sudo pacman -S moreutils  # sponge
 ```
 
 ## Compile
