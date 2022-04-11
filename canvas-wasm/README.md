@@ -1,5 +1,8 @@
 # Canvas WASM
-- DOCS: https://compile.fi/canvas-filled-three-ways-js-webassembly-and-webgl/
+DOCS
+- https://compile.fi/canvas-filled-three-ways-js-webassembly-and-webgl/
+- https://developer.mozilla.org/en-US/docs/WebAssembly/Loading_and_running
+
 
 ## Install EMSDK
 ```
