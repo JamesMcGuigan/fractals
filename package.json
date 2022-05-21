@@ -1,0 +1,18 @@
+{
+  "name": "fractals",
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "install": "cd svelte && npm install",
+    "dev":     "cd svelte && npm run dev",
+    "build":   "cd svelte && npm run build",
+    "package": "cd svelte && npm run package",
+    "preview": "cd svelte && npm run preview",
+    "prepare": "cd svelte && npm run prepare",
+    "test":    "cd svelte && npm run test",
+    "check":   "cd svelte && npm run check",
+    "check:watch": "cd svelte && npm run check:watch",
+    "lint":    "cd svelte && npm run lint",
+    "format":  "cd svelte && npm run format"
+  }
+}
