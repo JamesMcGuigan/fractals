@@ -1,24 +1,22 @@
 {
   "name": "fractals",
-  "version": "0.1.0",
   "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "next": "12.1.6",
-    "react": "18.1.0",
-    "react-dom": "18.1.0"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@types/node": "17.0.35",
-    "@types/react": "18.0.9",
-    "@types/react-dom": "18.0.4",
-    "eslint": "8.16.0",
-    "eslint-config-next": "12.1.6",
-    "typescript": "4.6.4"
+    "@sveltejs/vite-plugin-svelte": "^1.0.0-next.30",
+    "@tsconfig/svelte": "^2.0.1",
+    "svelte": "^3.44.0",
+    "svelte-check": "^2.2.7",
+    "svelte-preprocess": "^4.9.8",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.9"
   }
 }
