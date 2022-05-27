@@ -14,6 +14,7 @@
 
 # production
 /build
+/rust/target/
 
 # misc
 .DS_Store
