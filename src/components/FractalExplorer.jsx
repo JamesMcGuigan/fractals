@@ -5,13 +5,18 @@ import FractalSelect from "./controls/FractalSelect";
 export default class FractalExplorer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            fractal: ""
+        };
+    }
+    setState(state, callback) {
+        super.setState(state, callback);
     }
     render() {
         return (
             <>
-                {this.props.children}
-                <FractalSelect/>
+                {React.cloneElement(this.props.children, this.state)}
+                <FractalSelect onChange={value => this.setState({ fractal: value }) }/>
                 <ZoomControls/>
             </>
         );
