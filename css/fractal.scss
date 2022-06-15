@@ -1,0 +1,18 @@
+.fractal {
+  canvas {
+    position: fixed;
+    top:    0;
+    left:   0;
+    width:  100vw;
+    height: 100vh;
+  }
+  &.split canvas {
+    display: block !important;
+    width:   50vw;
+  }
+  canvas#julia {
+    display: none;
+    left:    unset;
+    right:   0;
+  }
+}
