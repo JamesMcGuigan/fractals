@@ -11,14 +11,26 @@ crate-type = ["rlib", "cdylib"]   # Only required for wasm-pack
 
 
 [dependencies]
-stdweb = "0.4.20"
+anyhow = "1.0.58"
 gloo-console = "0.2.1"
-yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
-yew_styles = { version="0.11", features = ["navbar"]}
-stylist = "0.9"
-wee_alloc = "0.4.5"
 grass = "0.11.0"     # cargo install grass
 num-complex = "0.4"
+stdweb = "0.4.20"
+stylist = "0.9"
+wasm-bindgen = "0.2.81"
+wee_alloc = "0.4.5"
+yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
+yew_styles = { version="0.11", features = ["navbar"]}
+
+[dependencies.web-sys]
+version = "0.3.58"
+features = [
+    "CanvasRenderingContext2d",
+    "Document",
+    "Element",
+    "HtmlCanvasElement",
+    "Window",
+]
 
 
 # DOCS: https://yew.rs/docs/advanced-topics/optimizations
