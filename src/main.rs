@@ -1,10 +1,10 @@
 extern crate yew;
-extern crate fractals;
-
-use yew::Renderer;  // import lib.rs
-use crate::fractal::Fractal;
+mod _wee_alloc;
 mod fractal;
+mod html;
+mod julia_set;
 
+#[allow(dead_code)]
 fn main() {
-    Renderer::<Fractal>::new().render();
+    yew::Renderer::<fractal::Fractal>::new().render();
 }

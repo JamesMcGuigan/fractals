@@ -6,8 +6,8 @@ version = "0.1.0"
 edition = "2021"  # DOCS: https://doc.rust-lang.org/edition-guide/editions/index.html
 
 
-[lib]
-crate-type = ["rlib", "cdylib"]   # Only required for wasm-pack
+# [lib]
+# crate-type = ["rlib", "cdylib"]   # Only required for wasm-pack
 
 
 [dependencies]
@@ -29,6 +29,7 @@ features = [
     "Document",
     "Element",
     "HtmlCanvasElement",
+    "ImageData",
     "Window",
 ]
 

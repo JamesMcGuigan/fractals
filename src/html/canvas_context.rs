@@ -1,3 +1,4 @@
+// WORKS!
 // Source:   https://github.com/jessaimaya/rust_wasm/blob/89cea2a7aea240f6bd3ec8722e539aca35cee73c/src/browser.rs
 // QUESTION: https://stackoverflow.com/questions/72647778/stdwebwebhtml-elementcanvaselement-from-document-query-selector-in-rus
 
