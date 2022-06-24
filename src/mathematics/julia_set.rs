@@ -1,10 +1,11 @@
 // Source: https://github.com/rustwasm/wasm-bindgen/blob/main/examples/julia_set/src/lib.rs
 // Source: https://github.com/JamesMcGuigan/ecosystem-research/blob/master/wasm/js-canvas/rust-webpack/src/julia_set.rs
 
-use std::ops::Add;
+// use std::ops::Add;
 use wasm_bindgen::prelude::*;
 use wasm_bindgen::Clamped;
 use web_sys::{CanvasRenderingContext2d, ImageData};
+use crate::mathematics::complex::Complex;
 
 #[wasm_bindgen]
 pub fn draw_julia_set(
@@ -58,31 +59,3 @@ fn get_iter_index(z: Complex, c: Complex) -> u32 {
     iter_index
 }
 
-#[derive(Clone, Copy, Debug)]
-struct Complex {
-    real: f64,
-    imaginary: f64,
-}
-
-impl Complex {
-    fn square(self) -> Complex {
-        let real = (self.real * self.real) - (self.imaginary * self.imaginary);
-        let imaginary = 2.0 * self.real * self.imaginary;
-        Complex { real, imaginary }
-    }
-
-    fn norm(&self) -> f64 {
-        (self.real * self.real) + (self.imaginary * self.imaginary)
-    }
-}
-
-impl Add<Complex> for Complex {
-    type Output = Complex;
-
-    fn add(self, rhs: Complex) -> Complex {
-        Complex {
-            real: self.real + rhs.real,
-            imaginary: self.imaginary + rhs.imaginary,
-        }
-    }
-}

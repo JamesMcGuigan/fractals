@@ -3,7 +3,7 @@ use yew::prelude::*;
 use num_complex::Complex;
 use web_sys::CanvasRenderingContext2d;
 use crate::html;
-use crate::julia_set::draw_julia_set;
+use crate::mathematics::julia_set::draw_julia_set;
 use gloo_console::log;
 
 // #[derive(PartialEq, Properties)]
@@ -49,9 +49,10 @@ impl Component for Fractal {
         let canvas_ctx: CanvasRenderingContext2d = html::canvas_context_2d("mandelbrot").unwrap();
         let width  = canvas.width();
         let height = canvas.height();
+        let c = Complex::new(0.25, 0.0);
 
         // warning: unused `Result` that must be used
-        draw_julia_set(&canvas_ctx, width, height, 0.25, 0.0);
+        draw_julia_set(&canvas_ctx, width, height, c.re, c.im);
 
         log!(format!("Component::Fractal::rendered({width} x {height})").as_str());
     }

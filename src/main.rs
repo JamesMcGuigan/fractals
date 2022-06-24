@@ -1,10 +1,10 @@
 extern crate yew;
 mod _wee_alloc;
-mod fractal;
+mod components;
 mod html;
-mod julia_set;
+mod mathematics;
 
 #[allow(dead_code)]
 fn main() {
-    yew::Renderer::<fractal::Fractal>::new().render();
+    yew::Renderer::<components::Fractal>::new().render();
 }
