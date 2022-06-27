@@ -2,7 +2,7 @@
 use yew::prelude::*;
 use num_complex::Complex;
 use web_sys::CanvasRenderingContext2d;
-use crate::html;
+use crate::elements;
 use crate::mathematics::julia_set::draw_julia_set;
 use gloo_console::log;
 
@@ -45,8 +45,8 @@ impl Component for Fractal {
     #[allow(unused_must_use)]
     fn rendered(&mut self, _ctx: &Context<Self>, _first_render: bool) {
         // DOCS: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2d
-        let canvas = html::canvas("mandelbrot").unwrap();
-        let canvas_ctx: CanvasRenderingContext2d = html::canvas_context_2d("mandelbrot").unwrap();
+        let canvas = elements::canvas("mandelbrot").unwrap();
+        let canvas_ctx: CanvasRenderingContext2d = elements::canvas_context_2d("mandelbrot").unwrap();
         let width  = canvas.width();
         let height = canvas.height();
         let c = Complex::new(0.25, 0.0);
