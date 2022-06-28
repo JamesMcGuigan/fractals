@@ -13,10 +13,10 @@ pub fn draw_julia_set(
     width: u32,
     height: u32,
     real: f64,
-    imaginary: f64,
+    imag: f64,
 ) {
     // The real workhorse of this algorithm, generating pixel data
-    let c = Complex { real, imaginary };
+    let c = Complex { real, imag };
     let data_julia = get_julia_set(width, height, c);
     let data_clamped = ImageData::new_with_u8_clamped_array_and_sh(
         Clamped(&data_julia), width, height
@@ -35,7 +35,7 @@ fn get_julia_set(width: u32, height: u32, c: Complex) -> Vec<u8> {
         for x in 0..width {
             let z = Complex {
                 real: y as f64 * scale - param_r,
-                imaginary: x as f64 * scale - param_i,
+                imag: x as f64 * scale - param_i,
             };
             let iter_index = get_iter_index(z, c);
             data.push((iter_index / 4) as u8);
