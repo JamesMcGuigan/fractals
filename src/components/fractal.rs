@@ -29,7 +29,7 @@ impl Component for Fractal {
     type Properties = ();
 
     fn create(_ctx: &Context<Self>) -> Self {
-        log!("Component::Fractal::create()");
+        log!("Fractal::create()");
         Self {
             z: Complex::new(0.0,0.0),
             c: Complex::new(0.25,0.25),
@@ -39,7 +39,7 @@ impl Component for Fractal {
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        log!("Component::Fractal::view()");
+        log!("Fractal::view()");
         html! {
             <div class="fractal">
                 <canvas id="mandelbrot" ref={self.node_canvas.clone()}/>
@@ -64,15 +64,15 @@ impl Component for Fractal {
                 elements::canvas_context_2d(&canvas_elm)
                 .unwrap();
 
-            draw_julia_set(&canvas_ctx, width, height, self.c.re, self.c.im);
+            draw_julia_set(&canvas_ctx, width, height, self.c.re, self.c.im, self.zoom);
         }
 
-        let time_taken = (now() - time_start) as i32;
-        log!(format!("Component::Fractal::rendered({width} x {height}) = {time_taken}ms").as_str());
+        let time_taken = (now() - time_start) / 1000.0;
+        log!(format!("Fractal::rendered({width} x {height}) = {time_taken:.3}s").as_str());
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        log!("Component::Fractal::update()");
+        log!("Fractal::update()");
         match msg {
             Msg::Resize => {
                 let window = elements::window().unwrap();
