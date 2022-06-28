@@ -4,7 +4,7 @@
 
 use gloo_console::log;
 use gloo_events::EventListener;
-use stdweb::js;
+// use stdweb::js;
 use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
 
@@ -41,12 +41,11 @@ impl Component for CanvasQuestion {
         if first_render {
             ctx.link().send_message(Msg::Resize);   // WORKS
 
-            // found signature of `fn(yew::Event)
-            let on_window_resize = |_event: Event| {
+            // &Event = BUGFIX: found signature of `fn(yew::Event)
+            // &Event = BUGFIX: expected signature of `for<'r> fn(&'r yew::Event)
+            let on_window_resize = |_event: &Event| {
                 ctx.link().send_message(Msg::Resize);
             };
-
-            // BUG: expected signature of `for<'r> fn(&'r yew::Event)
             let listener = EventListener::new( &web_sys::window().unwrap(),
                                                "resize", on_window_resize );
 
@@ -61,10 +60,11 @@ impl Component for CanvasQuestion {
             // }
         }
 
-        let canvas = elements::canvas("canvas").unwrap();
-        let _canvas_ctx: CanvasRenderingContext2d = elements::canvas_context_2d("canvas").unwrap();
-        let width  = canvas.width();
-        let height = canvas.height();
+        let canvas_elm = elements::canvas("canvas").unwrap();
+        let _canvas_ctx: CanvasRenderingContext2d =
+            elements::canvas_context_2d(&canvas_elm).unwrap();
+        let width  = canvas_elm.width();
+        let height = canvas_elm.height();
         log!(format!("Component::Fractal::rendered({width} x {height})").as_str());
     }
 
