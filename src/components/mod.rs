@@ -1,5 +1,5 @@
-mod fractal;
-mod canvas_question;
+pub mod fractal;
+// pub mod canvas_question;
 
 pub use fractal::Fractal;
-pub use canvas_question::CanvasQuestion;
+// pub use canvas_question::CanvasQuestion;

@@ -19,6 +19,7 @@ cargo install --path .
 Validate
 ```bash
 RUSTFLAGS="-Z macro-backtrace" cargo check
+RUSTFLAGS="-Z macro-backtrace" cargo clippy
 cargo expand --lib | cat 
 cargo expand --bin yewcounter | cat 
 ```

@@ -1,6 +1,5 @@
-// QUESTION: I am building a webapp in Yew and attempting to bind a callback to the window resize event, triggering a Msg::Resize update.
-//
-// This is a minimalist test case:
+// QUESTION: This is a minimalist test case:
+// - https://stackoverflow.com/questions/72790427/type-mismatch-in-closure-arguments-expected-signature-of-forr-fnr-yewe
 // DOCS: https://github.com/yewstack/yew/issues/1258
 
 use gloo_console::log;

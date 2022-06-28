@@ -1,24 +1,29 @@
 // Source: https://yew.rs/docs/getting-started/build-a-sample-app
+
+use anyhow::{anyhow, Result};
 use gloo_console::log;
+use gloo_events::EventListener;
 use num_complex::Complex;
-use web_sys::CanvasRenderingContext2d;
+use stdweb::js;
+use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
 use yew::prelude::*;
 
 use crate::elements;
+use crate::elements::canvas;
 use crate::mathematics::julia_set::draw_julia_set;
+use crate::services::timer::now;
 
 
-// #[derive(PartialEq, Properties)]
-#[derive(PartialEq)]
+#[derive(PartialEq, Debug)]
 pub struct Fractal {
-    x: Complex<f64>,
-    y: Complex<f64>,
+    z: Complex<f64>,
+    c: Complex<f64>,
     zoom: f64,
-    node_mandelbrot: NodeRef,
-    node_julia:      NodeRef,
+    node_canvas: NodeRef,
 }
 
 pub enum Msg {
+    Resize
 }
 
 
@@ -29,42 +34,61 @@ impl Component for Fractal {
     fn create(_ctx: &Context<Self>) -> Self {
         log!("Component::Fractal::create()");
         Self {
-            x: Complex::new(0.0,0.0),
-            y: Complex::new(0.0,0.0),
+            z: Complex::new(0.0,0.0),
+            c: Complex::new(0.25,0.25),
             zoom: 2.0,
-            node_mandelbrot: NodeRef::default(),
-            node_julia:      NodeRef::default(),
+            node_canvas: NodeRef::default(),
         }
     }
 
-    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
-        log!("Component::Fractal::update()");
-        true  // no rerender
-    }
-
     fn view(&self, _ctx: &Context<Self>) -> Html {
-        // let link = ctx.link();
         log!("Component::Fractal::view()");
         html! {
             <div class="fractal">
-                <canvas id="mandelbrot" ref={self.node_mandelbrot.clone()}/>
-                <canvas id="julia"      ref={self.node_julia.clone()}/>
+                <canvas id="mandelbrot" ref={self.node_canvas.clone()}/>
             </div>
         }
     }
 
-    #[allow(unused_must_use)]
-    fn rendered(&mut self, _ctx: &Context<Self>, _first_render: bool) {
-        // DOCS: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2d
-        let canvas = elements::canvas("mandelbrot").unwrap();
-        let canvas_ctx: CanvasRenderingContext2d = elements::canvas_context_2d("mandelbrot").unwrap();
-        let width  = canvas.width();
-        let height = canvas.height();
-        let c = Complex::new(0.25, 0.0);
+    fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
+        let time_start = now();
 
-        // warning: unused `Result` that must be used
-        draw_julia_set(&canvas_ctx, width, height, c.re, c.im);
+        // let canvas_elm = canvas("mandelbrot").unwrap();
+        let canvas_elm = self.node_canvas
+            .cast::<web_sys::HtmlCanvasElement>()
+            .expect("HtmlCanvasElement");
+        let width  = canvas_elm.width();
+        let height = canvas_elm.height();
 
-        log!(format!("Component::Fractal::rendered({width} x {height})").as_str());
+        if first_render {
+            ctx.link().send_message(Msg::Resize);
+        } else {
+            let canvas_ctx: CanvasRenderingContext2d =
+                elements::canvas_context_2d(&canvas_elm)
+                .unwrap();
+
+            draw_julia_set(&canvas_ctx, width, height, self.c.re, self.c.im);
+        }
+
+        let time_taken = (now() - time_start) as i32;
+        log!(format!("Component::Fractal::rendered({width} x {height}) = {time_taken}ms").as_str());
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        log!("Component::Fractal::update()");
+        match msg {
+            Msg::Resize => {
+                let window = elements::window().unwrap();
+                // let canvas_elm = elements::canvas("mandelbrot").unwrap();
+                let canvas_elm = self.node_canvas
+                    .cast::<web_sys::HtmlCanvasElement>()
+                    .expect("HtmlCanvasElement");
+                let width  = window.inner_width().unwrap().as_f64().unwrap();
+                let height = window.inner_height().unwrap().as_f64().unwrap();
+                canvas_elm.set_width( width  as u32);
+                canvas_elm.set_height(height as u32);
+                true    // rerender
+            }
+        }
     }
 }

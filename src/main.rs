@@ -13,6 +13,6 @@ fn main() {
     // DOCS: https://yew.rs/docs/next/concepts/html/events#event-bubbling
     // yew::set_event_bubbling(false);
 
-    // yew::Renderer::<components::Fractal>::new().render();
-    yew::Renderer::<components::CanvasQuestion>::new().render();
+    yew::Renderer::<components::Fractal>::new().render();
+    // yew::Renderer::<components::CanvasQuestion>::new().render();
 }

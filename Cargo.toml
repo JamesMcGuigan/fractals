@@ -33,6 +33,7 @@ features = [
     "Element",
     "HtmlCanvasElement",
     "ImageData",
+    "Performance",
     "Window",
 ]
 

@@ -33,8 +33,9 @@ pub fn canvas(id_selector: &str) -> Result<HtmlCanvasElement> {
 
 #[allow(dead_code)]
 // DOCS: https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2d
-pub fn canvas_context_2d(id_selector: &str) -> Result<CanvasRenderingContext2d> {
-    canvas(id_selector)?
+// pub fn canvas_context_2d(id_selector: &str) -> Result<CanvasRenderingContext2d> {
+pub fn canvas_context_2d(canvas_elm: &HtmlCanvasElement) -> Result<CanvasRenderingContext2d> {
+    canvas_elm
         .get_context("2d")
         .map_err(|js_value| anyhow!("Error getting 2d context {:#?}", js_value))?
         .ok_or_else(|| anyhow!("No 2d context found"))?
