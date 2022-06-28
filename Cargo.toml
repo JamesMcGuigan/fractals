@@ -12,6 +12,8 @@ edition = "2021"  # DOCS: https://doc.rust-lang.org/edition-guide/editions/index
 
 [dependencies]
 anyhow = "1.0.58"
+cfg-if = "1.0.0"
+cfg-match = "0.2.1"
 gloo-console = "0.2.1"
 gloo-events = "0.1"
 grass = "0.11.0"
