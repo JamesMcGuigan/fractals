@@ -1,20 +1,17 @@
 // Source: https://yew.rs/docs/getting-started/build-a-sample-app
 
-use anyhow::{anyhow, Result};
 use gloo_console::log;
-use gloo_events::EventListener;
 use num_complex::Complex;
-use stdweb::js;
-use web_sys::{CanvasRenderingContext2d, HtmlCanvasElement};
+use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
+// use gloo_events::EventListener;
 
 use crate::elements;
-use crate::elements::canvas;
 use crate::mathematics::julia_set::draw_julia_set;
 use crate::services::timer::now;
 
-
-#[derive(PartialEq, Debug)]
+#[allow(dead_code)]
+#[derive(Debug)]
 pub struct Fractal {
     z: Complex<f64>,
     c: Complex<f64>,

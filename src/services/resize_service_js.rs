@@ -3,15 +3,19 @@
 use stdweb::{js, Value};
 use yew::Callback;
 
+#[allow(dead_code)]
 pub struct ResizeServiceJs {}
 
 pub struct ResizeTask(Option<Value>);
 
 impl ResizeServiceJs {
+
+    #[allow(dead_code)]
     pub fn new() -> ResizeServiceJs {
         ResizeServiceJs {}
     }
 
+    #[allow(dead_code)]
     pub fn register(&mut self, callback: Callback<()>) -> ResizeTask {
         let callback = move || {
             callback.emit(());
