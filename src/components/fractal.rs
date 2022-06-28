@@ -1,10 +1,12 @@
 // Source: https://yew.rs/docs/getting-started/build-a-sample-app
-use yew::prelude::*;
+use gloo_console::log;
 use num_complex::Complex;
 use web_sys::CanvasRenderingContext2d;
+use yew::prelude::*;
+
 use crate::elements;
 use crate::mathematics::julia_set::draw_julia_set;
-use gloo_console::log;
+
 
 // #[derive(PartialEq, Properties)]
 #[derive(PartialEq)]
@@ -12,6 +14,8 @@ pub struct Fractal {
     x: Complex<f64>,
     y: Complex<f64>,
     zoom: f64,
+    node_mandelbrot: NodeRef,
+    node_julia:      NodeRef,
 }
 
 pub enum Msg {
@@ -28,7 +32,14 @@ impl Component for Fractal {
             x: Complex::new(0.0,0.0),
             y: Complex::new(0.0,0.0),
             zoom: 2.0,
+            node_mandelbrot: NodeRef::default(),
+            node_julia:      NodeRef::default(),
         }
+    }
+
+    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
+        log!("Component::Fractal::update()");
+        true  // no rerender
     }
 
     fn view(&self, _ctx: &Context<Self>) -> Html {
@@ -36,8 +47,8 @@ impl Component for Fractal {
         log!("Component::Fractal::view()");
         html! {
             <div class="fractal">
-                <canvas id="mandelbrot"/>
-                <canvas id="julia"/>
+                <canvas id="mandelbrot" ref={self.node_mandelbrot.clone()}/>
+                <canvas id="julia"      ref={self.node_julia.clone()}/>
             </div>
         }
     }
@@ -55,10 +66,5 @@ impl Component for Fractal {
         draw_julia_set(&canvas_ctx, width, height, c.re, c.im);
 
         log!(format!("Component::Fractal::rendered({width} x {height})").as_str());
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, _msg: Self::Message) -> bool {
-        log!("Component::Fractal::update()");
-        true  // no rerender
     }
 }
