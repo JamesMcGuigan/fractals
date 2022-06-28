@@ -13,7 +13,8 @@ edition = "2021"  # DOCS: https://doc.rust-lang.org/edition-guide/editions/index
 [dependencies]
 anyhow = "1.0.58"
 gloo-console = "0.2.1"
-grass = "0.11.0"     # cargo install grass
+gloo-events = "0.1"
+grass = "0.11.0"
 num-complex = "0.4"
 stdweb = "0.4.20"
 stylist = "0.9"
