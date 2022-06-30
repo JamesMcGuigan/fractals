@@ -27,7 +27,7 @@ pub fn canvas(id_selector: &str) -> Result<HtmlCanvasElement> {
     document()?
         .get_element_by_id(id_selector)
         .ok_or_else(|| anyhow!("No Canvas Element found with ID 'canvas'"))?
-        .dyn_into::<web_sys::HtmlCanvasElement>()
+        .dyn_into::<HtmlCanvasElement>()
         .map_err(|element| anyhow!("Error converting {:#?} to HtmlCanvasElement", element))
 }
 
@@ -39,7 +39,7 @@ pub fn canvas_context_2d(canvas_elm: &HtmlCanvasElement) -> Result<CanvasRenderi
         .get_context("2d")
         .map_err(|js_value| anyhow!("Error getting 2d context {:#?}", js_value))?
         .ok_or_else(|| anyhow!("No 2d context found"))?
-        .dyn_into::<web_sys::CanvasRenderingContext2d>()
+        .dyn_into::<CanvasRenderingContext2d>()
         .map_err(|element| {
             anyhow!(
                 "Error converting {:#?} to CanvasRenderingContext2d",

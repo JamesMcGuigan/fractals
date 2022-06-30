@@ -13,7 +13,7 @@ impl Complex {
         Complex { real, imag }
     }
 
-    pub fn norm(&self) -> f64 {
+    pub fn norm(self) -> f64 {
         (self.real * self.real) + (self.imag * self.imag)
     }
 }
