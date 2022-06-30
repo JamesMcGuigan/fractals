@@ -1,10 +1,10 @@
 // Source: https://yew.rs/docs/getting-started/build-a-sample-app
 
 use gloo_console::log;
+use gloo_events::EventListener;
 use num_complex::Complex;
 use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
-// use gloo_events::EventListener;
 
 use crate::elements;
 use crate::mathematics::julia_set::draw_julia_set;
@@ -17,6 +17,7 @@ pub struct Fractal {
     c: Complex<f64>,
     zoom: f64,
     node_canvas: NodeRef,
+    listener: Option<EventListener>,
 }
 
 pub enum Msg {
@@ -35,6 +36,7 @@ impl Component for Fractal {
             c: Complex::new(0.25,0.25),
             zoom: 2.0,
             node_canvas: NodeRef::default(),
+            listener: None,
         }
     }
 
@@ -59,6 +61,13 @@ impl Component for Fractal {
 
         if first_render {
             ctx.link().send_message(Msg::Resize);
+            let onresize = ctx.link().callback(|_: Event| Msg::Resize);
+            let listener = EventListener::new(
+                &web_sys::window().unwrap(),
+                "resize",
+                move |e| onresize.emit(e.clone())
+            );
+            self.listener = Some(listener);
         } else {
             let canvas_ctx: CanvasRenderingContext2d =
                 elements::canvas_context_2d(&canvas_elm)

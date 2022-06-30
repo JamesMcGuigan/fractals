@@ -1,10 +1,9 @@
-// QUESTION: This is a minimalist test case:
-// - https://stackoverflow.com/questions/72790427/type-mismatch-in-closure-arguments-expected-signature-of-forr-fnr-yewe
+// DOCS: https://yew.rs/docs/concepts/html/events
 // DOCS: https://github.com/yewstack/yew/issues/1258
+// QUESTION: https://stackoverflow.com/questions/72790427/type-mismatch-in-closure-arguments-expected-signature-of-forr-fnr-yewe
 
 use gloo_console::log;
 use gloo_events::EventListener;
-// use stdweb::js;
 use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
 
@@ -12,6 +11,7 @@ use crate::elements;
 
 pub struct CanvasQuestion {
     node_canvas: NodeRef,
+    listener: Option<EventListener>,
 }
 
 pub enum Msg {
@@ -27,6 +27,7 @@ impl Component for CanvasQuestion {
         log!("Component::Canvas::create()");
         Self {
             node_canvas: NodeRef::default(),
+            listener: None,
         }
     }
 
@@ -37,25 +38,22 @@ impl Component for CanvasQuestion {
         }
     }
 
+
     fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
         if first_render {
-            ctx.link().send_message(Msg::Resize);   // WORKS
-
-            // &Event = BUGFIX: found signature of `fn(yew::Event)
-            // &Event = BUGFIX: expected signature of `for<'r> fn(&'r yew::Event)
-            let on_window_resize = |_event: &Event| {
-                ctx.link().send_message(Msg::Resize);
-            };
-            let listener = EventListener::new( &web_sys::window().unwrap(),
-                                               "resize", on_window_resize );
-
-            // Is .forget() required, or do we need to assign to self.listener for Drop?
-            listener.forget();
+            ctx.link().send_message(Msg::Resize);
+            let onresize = ctx.link().callback(|_: Event| Msg::Resize);
+            let listener = EventListener::new(
+                &web_sys::window().unwrap(),
+                "resize",
+                move |e| onresize.emit(e.clone())
+            );
+            self.listener = Some(listener);
 
             // // BUG: the trait `stdweb::unstable::TryFrom<stdweb::Value>` is not implemented for `yew::Event`
             // js! {
             //     console.log("JS::rendered()");
-            //     var onWindowResize = @{on_window_resize};
+            //     var onWindowResize = @{onresize};
             //     window.addEventListener("resize", onWindowResize);
             // }
         }
@@ -63,11 +61,10 @@ impl Component for CanvasQuestion {
         let canvas_elm = elements::canvas("canvas").unwrap();
         let _canvas_ctx: CanvasRenderingContext2d =
             elements::canvas_context_2d(&canvas_elm).unwrap();
-        let width  = canvas_elm.width();
-        let height = canvas_elm.height();
-        log!(format!("Component::Fractal::rendered({width} x {height})").as_str());
+        let _width  = canvas_elm.width();
+        let _height = canvas_elm.height();
+        log!(format!("Component::Fractal::rendered({_width} x {_height})").as_str());
     }
-
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         log!("Component::Canvas::update()");
