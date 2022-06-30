@@ -1,5 +1,10 @@
+# IDE
 .idea
 *.iml
+
+# OS
 .DS_Store
+
+# Build
 target
-dist
+# dist  # required for deployment to vercel
