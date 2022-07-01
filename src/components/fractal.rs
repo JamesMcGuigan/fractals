@@ -7,15 +7,17 @@ use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
 
 use crate::elements;
-use crate::mathematics::julia_set::draw_julia_set;
+use crate::mathematics::julia_set::julia_set_canvas;
+#[allow(unused_imports)]
+use crate::services::colorschemes::{colorscheme_grayscale, colorscheme_hsl};
 use crate::services::timer::now;
 
 #[allow(dead_code)]
 #[derive(Debug)]
 pub struct Fractal {
-    z: Complex<f64>,
-    c: Complex<f64>,
-    zoom: f64,
+    z: Complex<f32>,
+    c: Complex<f32>,
+    zoom: f32,
     node_canvas: NodeRef,
     listener: Option<EventListener>,
 }
@@ -51,6 +53,7 @@ impl Component for Fractal {
 
     fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
         let time_start = now();
+        let limit = 32;
 
         // let canvas_elm = canvas("mandelbrot").unwrap();
         let canvas_elm = self.node_canvas
@@ -73,11 +76,20 @@ impl Component for Fractal {
                 elements::canvas_context_2d(&canvas_elm)
                 .unwrap();
 
-            draw_julia_set(&canvas_ctx, width, height, self.c.re, self.c.im, self.zoom);
+            // let colorscheme = colorscheme_hsl;
+            let colorscheme = colorscheme_grayscale;
+            julia_set_canvas(
+                &canvas_ctx,
+                width, height,
+                self.c.re, self.c.im,
+                self.zoom,
+                limit,
+                &Some(colorscheme),
+            );
         }
 
-        let time_taken = (now() - time_start) / 1000.0;
-        log!(format!("Fractal::rendered({width} x {height}) = {time_taken:.3}s").as_str());
+        let _time_taken = (now() - time_start) / 1000.0;
+        log!(format!("Fractal::rendered({width} x {height}) = {_time_taken:.3}s").as_str());
     }
 
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {

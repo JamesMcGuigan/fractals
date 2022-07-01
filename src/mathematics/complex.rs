@@ -2,8 +2,8 @@ use std::ops::Add;
 
 #[derive(Clone, Copy, Debug)]
 pub struct Complex {
-    pub real: f64,
-    pub imag: f64,
+    pub real: f32,
+    pub imag: f32,
 }
 
 impl Complex {
@@ -13,7 +13,7 @@ impl Complex {
         Complex { real, imag }
     }
 
-    pub fn norm(self) -> f64 {
+    pub fn norm(self) -> f32 {
         (self.real * self.real) + (self.imag * self.imag)
     }
 }
