@@ -3,7 +3,7 @@
 [package]
 name = "fractals"
 version = "0.1.0"
-edition = "2021"  # DOCS: https://doc.rust-lang.org/edition-guide/editions/index.html
+edition = "2018"  # vercel only supports 2015 + 2018, NOT: 2021
 
 
 # [lib]
