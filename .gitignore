@@ -8,3 +8,6 @@
 # Build
 target
 dist
+
+# Build = grass.sh
+*.css

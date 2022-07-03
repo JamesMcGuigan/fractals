@@ -10,6 +10,19 @@ fi
 
 # Lazy compile with caching
 # Find all .scss + .sass files, newer than .css (or if .css missing), then compile through grass
-CSS='{=1 s/\.s[ac]ss$/.css/ =}'
-find . -name '*.s[ac]ss' |
-  parallel --group "if [ ! -f $CSS ] || [ {1} -nt $CSS ]; then echo 'grass {1} > $CSS'; grass {1} > $CSS; fi;"
+function grass_cached () {
+  SCSS=$1
+  CSS=$(echo $SCSS | sed 's/\.s[ac]ss$/.css/')
+  if [ ! -f $CSS ] || [ "$SCSS" -nt "$CSS" ]; then
+    echo "grass '$SCSS' > '$CSS'";
+    grass "$SCSS" > "$CSS";
+  fi;
+}
+export -f grass_cached
+find . -name '*.s[ac]ss' | xargs -P0 -I{} bash -c 'grass_cached "$@"' _ {}
+
+
+## BUG: GNU Parallel is not preinstalled on AWS - use xargs instead
+#CSS='{=1 s/\.s[ac]ss$/.css/ =}'
+#find . -name '*.s[ac]ss' |
+#  parallel --group "if [ ! -f $CSS ] || [ {1} -nt $CSS ]; then echo 'grass {1} > $CSS'; grass {1} > $CSS; fi;"
