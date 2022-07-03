@@ -35,3 +35,12 @@ trunk build --release
 http-server dist/               # Javascript webserver
 see start -b 8080 -p dist/      # Rust webserver
 ```
+
+Vercel Configuration
+- https://vercel.com/jamesmcguigan/fractals/
+```
+BUILD:   source $HOME/.cargo/env; trunk clean; trunk build --release
+OUTPUT:  dist
+INSTALL: curl https://sh.rustup.rs -sSf | sh -s -- -y; source $HOME/.cargo/env; rustup target add wasm32-unknown-unknown; cargo install trunk; cargo install --path .; 
+ROOT:    ./
+```
