@@ -7,4 +7,4 @@
 
 # Build
 target
-# dist  # required for deployment to vercel
+dist
