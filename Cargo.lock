@@ -158,6 +158,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "contracts"
+version = "0.6.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f1d1429e3bd78171c65aa010eabcdf8f863ba3254728dbfb0ad4b1545beac15c"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn",
+]
+
+[[package]]
 name = "discard"
 version = "1.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -190,9 +201,8 @@ name = "fractals"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "cfg-if 1.0.0",
- "cfg-match",
  "colors-transform",
+ "contracts",
  "gloo-console",
  "gloo-events",
  "grass",

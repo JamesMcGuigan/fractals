@@ -6,7 +6,7 @@ use wasm_bindgen::Clamped;
 use web_sys::{CanvasRenderingContext2d, ImageData};
 
 use crate::mathematics::complex::Complex;
-use crate::services::colors::map_colorscheme;
+use crate::services::vectors::{map_colorscheme, vec_u32_to_u8};
 
 // #[wasm_bindgen]
 #[allow(clippy::too_many_arguments)]
@@ -22,11 +22,22 @@ pub fn julia_set_canvas(
 ) {
     // The real workhorse of this algorithm, generating pixel data
     let c = Complex { real, imag };
-    let data_julia = julia_set(c, width, height, radius, limit);
-    let data_color = map_colorscheme(&data_julia, colorscheme_fn);
+    let data_julia: Vec<u32> = julia_set(c, width, height, radius, limit);
+    let data_color: Vec<u32> = map_colorscheme(&data_julia, colorscheme_fn);
+    let data_color_u8: Vec<u8> = vec_u32_to_u8(&data_color);
     let data_clamped = ImageData::new_with_u8_clamped_array_and_sh(
-        Clamped(&data_color), width, height
+        Clamped(&data_color_u8), width, height
     ).unwrap();
+    {
+        let _data_julia_min: u32  = *data_julia.iter().min().unwrap();
+        let _data_julia_max: u32  = *data_julia.iter().max().unwrap();
+        let _data_julia_mean: u32 =  data_julia.iter().sum::<u32>() / data_julia.len() as u32;
+        let _data_color_min: u8   = *data_color_u8.iter().min().unwrap();
+        let _data_color_max: u8   = *data_color_u8.iter().max().unwrap();
+        let _data_color_mean: u32 =  data_color_u8.iter().map(|&e| e as u32).sum::<u32>() / data_color.len() as u32;
+        log!(format!("data_julia({_data_julia_min}, {_data_julia_mean}, {_data_julia_mean})"));
+        log!(format!("data_color({_data_color_min}, {_data_color_mean}, {_data_color_mean})"));
+    }
     ctx.put_image_data(&data_clamped, 0.0, 0.0).ok();
 }
 
