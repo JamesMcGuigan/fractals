@@ -2,10 +2,10 @@
 // Source: https://github.com/JamesMcGuigan/ecosystem-research/blob/master/wasm/js-canvas/rust-webpack/src/julia_set.rs
 
 use gloo_console::log;
+use num_complex::Complex;
 use wasm_bindgen::Clamped;
 use web_sys::{CanvasRenderingContext2d, ImageData};
 
-use crate::mathematics::complex::Complex;
 use crate::services::vectors::{map_colorscheme, vec_u32_to_u8};
 
 // #[wasm_bindgen]
@@ -21,7 +21,7 @@ pub fn julia_set_canvas(
     colorscheme_fn: &Option<fn(f32) -> u32>,  // prevents #[wasm_bindgen]
 ) {
     // The real workhorse of this algorithm, generating pixel data
-    let c = Complex { real, imag };
+    let c = Complex::new(real, imag);
     let data_julia: Vec<u32> = julia_set(c, width, height, radius, limit);
     let data_color: Vec<u32> = map_colorscheme(&data_julia, colorscheme_fn);
     let data_color_u8: Vec<u8> = vec_u32_to_u8(&data_color);
@@ -41,7 +41,7 @@ pub fn julia_set_canvas(
     ctx.put_image_data(&data_clamped, 0.0, 0.0).ok();
 }
 
-pub fn julia_set(c: Complex, width: u32, height: u32, radius: f32, limit: u32) -> Vec<u32> {
+pub fn julia_set(c: Complex<f32>, width: u32, height: u32, radius: f32, limit: u32) -> Vec<u32> {
     let capacity = (width * height) as usize;
     let mut data = Vec::<u32>::with_capacity(capacity);
 
@@ -54,8 +54,8 @@ pub fn julia_set(c: Complex, width: u32, height: u32, radius: f32, limit: u32) -
     for y in 0..height {
         for x in 0..width {
             let z = Complex {
-                real: (y as f32 - offset_y) * scale,
-                imag: (x as f32 - offset_x) * scale,
+                re: (y as f32 - offset_y) * scale,
+                im: (x as f32 - offset_x) * scale,
             };
             let value = julia_value(z, c, limit);
             data.push(value);
@@ -64,14 +64,14 @@ pub fn julia_set(c: Complex, width: u32, height: u32, radius: f32, limit: u32) -
     data
 }
 
-pub fn julia_value(z: Complex, c: Complex, limit: u32) -> u32 {
+pub fn julia_value(z: Complex<f32>, c: Complex<f32>, limit: u32) -> u32 {
     let mut iter_index: u32 = 0;
     let mut z = z;
     while iter_index < limit {
         if z.norm() > 2.0 {
             break;
         }
-        z = z.square() + c;
+        z = (z * z) + c;
         iter_index += 1;
     }
     iter_index

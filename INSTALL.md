@@ -49,6 +49,4 @@ CLI
 ```
 cargo build;           RUST_BACKTRACE=1 ./target/debug/fractal_png
 cargo build --release; RUST_BACKTRACE=1 ./target/release/fractal_png
-
- 
 ```

@@ -4,8 +4,8 @@ extern crate fractals;
 extern crate yew;
 
 use image::save_buffer_with_format;
+use num_complex::Complex;
 
-use fractals::mathematics::complex::Complex;
 use fractals::mathematics::julia_set::julia_set;
 use fractals::services::colorschemes::colorscheme_hsl;
 use fractals::services::vectors::{map_colorscheme, vec_u32_to_u8, vec_u8_rgba_to_rgb};
@@ -25,7 +25,7 @@ fn fractal_to_png() {
     let radius = 2.0;
     let limit  = 64;
 
-    let c = Complex { real, imag };
+    let c = Complex::<f32>::new(real, imag);
     let data_julia: Vec<u32> = julia_set(c, width, height, radius, limit);
     let data_color: Vec<u32> = map_colorscheme(&data_julia, &Some(colorscheme_hsl));
     let data_color_u8_rgba: Vec<u8> = vec_u32_to_u8(&data_color);
