@@ -52,3 +52,10 @@ cargo build; RUST_BACKTRACE=1 ./target/debug/julia_image
 cargo build --release; 
 ./target/release/julia_image -c 0.5+0.5i -r 1 -o fractal.jpg
 ```
+
+Cargo Expand
+```
+cargo expand --lib
+cargo expand --bin fractals
+cargo expand --bin julia_image
+```
