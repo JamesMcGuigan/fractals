@@ -41,7 +41,7 @@ pub fn julia_set_canvas(
     ctx.put_image_data(&data_clamped, 0.0, 0.0).ok();
 }
 
-fn julia_set(c: Complex, width: u32, height: u32, radius: f32, limit: u32) -> Vec<u32> {
+pub fn julia_set(c: Complex, width: u32, height: u32, radius: f32, limit: u32) -> Vec<u32> {
     let capacity = (width * height) as usize;
     let mut data = Vec::<u32>::with_capacity(capacity);
 
@@ -64,7 +64,7 @@ fn julia_set(c: Complex, width: u32, height: u32, radius: f32, limit: u32) -> Ve
     data
 }
 
-fn julia_value(z: Complex, c: Complex, limit: u32) -> u32 {
+pub fn julia_value(z: Complex, c: Complex, limit: u32) -> u32 {
     let mut iter_index: u32 = 0;
     let mut z = z;
     while iter_index < limit {

@@ -13,6 +13,15 @@ pub fn vec_u32_to_u8(data: &Vec<u32>) -> Vec<u8> {
     output
 }
 
+// Remove alpha channel from RGBA stream - required for save_buffer_with_format()
+pub fn vec_u8_rgba_to_rgb(rgba: &Vec<u8>) -> Vec<u8> {
+    rgba.iter()
+        .enumerate()
+        .filter(|(i,_x)| i % 4 != 3)
+        .map(|(_i,x)| *x)
+        .collect::<Vec<u8>>()
+}
+
 
 pub fn map_colorscheme(data: &[u32], colorscheme_fn: &Option<fn(f32) -> u32>) -> Vec<u32> {
     let max = *data.iter().max().unwrap_or(&1) as f32;
@@ -39,6 +48,14 @@ mod tests {
         let input:    Vec<u32> = vec![ 0x12345678 ];
         let expected: Vec<u8>  = vec![ 0x12, 0x34, 0x56, 0x78 ];
         let output = vec_u32_to_u8(&input);
+        assert_eq!(expected, output);
+    }
+
+    #[test]
+    fn test_vec_u8_rgba_to_rgb() {
+        let input:    Vec<u8> = vec![ 0x12, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78 ];
+        let expected: Vec<u8> = vec![ 0x12, 0x34, 0x56,       0x12, 0x34, 0x56       ];
+        let output = vec_u8_rgba_to_rgb(&input);
         assert_eq!(expected, output);
     }
 }

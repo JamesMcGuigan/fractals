@@ -7,8 +7,12 @@ edition = "2018"
 
 
 
-# [lib]
-# crate-type = ["rlib", "cdylib"]   # Only required for wasm-pack
+#[lib]
+#crate-type = ["rlib", "cdylib"]   # Only required for wasm-pack
+
+[[bin]]
+name = "fractal_png"
+path = "src/bin/fractal_png.rs"
 
 
 
@@ -37,6 +41,7 @@ contracts = "0.6.3"
 gloo-console = "0.2.1"
 gloo-events = "0.1"
 grass = "0.11.0"
+image = "0.24.2"
 num-complex = "0.4"
 colors-transform = "0.2.11"
 stdweb = "0.4.20"
