@@ -1,6 +1,6 @@
+/// #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
+/// #![cfg_attr(debug_assertions, allow(dead_code))]
 extern crate fractals;
-// #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
-// #![cfg_attr(debug_assertions, allow(dead_code))]
 extern crate yew;
 
 use image::save_buffer_with_format;
@@ -10,8 +10,14 @@ use fractals::mathematics::julia_set::julia_set;
 use fractals::services::colorschemes::colorscheme_hsl;
 use fractals::services::vectors::{map_colorscheme, vec_u32_to_u8, vec_u8_rgba_to_rgb};
 
-// #[allow(dead_code)]
 fn main() {
+    let time_now= std::time::Instant::now();
+    fractal_to_png();
+    let time_taken = time_now.elapsed();
+    println!("wrote: fractal.png ({:.1?})", time_taken);
+}
+
+fn fractal_to_png() {
     let width  = 640;
     let height = 480;
     let real   = 0.5;
