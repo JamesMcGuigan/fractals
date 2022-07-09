@@ -47,6 +47,8 @@ ROOT:    ./
 
 CLI
 ```
-cargo build;           RUST_BACKTRACE=1 ./target/debug/fractal_png
-cargo build --release; RUST_BACKTRACE=1 ./target/release/fractal_png
+cargo build; RUST_BACKTRACE=1 ./target/debug/julia_image
+
+cargo build --release; 
+./target/release/julia_image -c 0.5+0.5i -r 1 -o fractal.jpg
 ```
