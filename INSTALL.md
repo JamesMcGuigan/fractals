@@ -27,8 +27,8 @@ cargo expand --bin yewcounter | cat
 Build
 ```bash
 ## Use Trunk - https://yew.rs/docs/getting-started/project-setup/using-trunk
-amazon-linux-extras install rust1  # Vercel: https://vercel.com/docs/concepts/deployments/build-step#build-image
 cargo install --path .
+cargo udeps
 trunk clean
 trunk serve --open  # Works - requires index.html
 trunk build --release

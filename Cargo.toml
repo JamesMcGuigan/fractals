@@ -45,7 +45,7 @@ opt-level = 3  # Optimize dependencies in Development mode - they don't change o
 opt-level = 1  # Turn on a small amount of optimisation in Development mode.
 
 
-
+# cargo udep  # remove unused dependencies
 [dependencies]
 anyhow = "1.0.58"
 # bytemuck = "1.10.0"
@@ -54,16 +54,15 @@ contracts = "0.6.3"
 colors-transform = "0.2.11"
 gloo-console = "0.2.1"
 gloo-events = "0.1"
-grass = "0.11.0"
 image = "0.24.2"
 num-complex = "0.4"
-stdweb = "0.4.20"
+# stdweb = "0.4.20"
 structopt = "0.3.26"
-stylist = "0.9"
+# stylist = "0.9"
 wasm-bindgen = "0.2.81"
 wee_alloc = "0.4.5"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
-yew_styles = { version="0.11", features = ["navbar"]}
+# yew_styles = { version="0.11", features = ["navbar"]}
 
 [dependencies.web-sys]
 version = "0.3.58"
@@ -76,3 +75,16 @@ features = [
     "Performance",
     "Window",
 ]
+
+# cargo install --git https://github.com/rust-lang/measureme --branch stable crox
+# cargo install --git https://github.com/rust-lang/measureme --branch stable summarize
+[dev-dependencies]
+cargo-bloat = "0.11.1"
+cargo-expand = "1.0.27"
+cargo-generate = "0.15.2"
+cargo-llvm-lines = "0.4.16"
+cargo-udeps = "0.1.30"
+cargo-web = "0.6.26"
+flamegraph = "0.6.1"
+grass = "0.11.0"
+wasm-bindgen-cli = "0.2.81"

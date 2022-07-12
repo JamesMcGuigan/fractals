@@ -11,3 +11,6 @@ dist
 
 # Build = grass.sh
 *.css
+
+# Build = cargo rustc --release --lib -- -Z self-profile
+*.mm_profdata
