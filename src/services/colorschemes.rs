@@ -7,7 +7,7 @@ pub enum ColorScheme {
     HSL,
     Grayscale,
     Green,
-    UltraFractal,
+    Ultra,
 }
 impl ColorScheme {
     #[allow(dead_code)]
@@ -18,7 +18,7 @@ impl ColorScheme {
             ColorScheme::HSL          => colorscheme_hsl(percentage),
             ColorScheme::Grayscale    => colorscheme_grayscale(percentage),
             ColorScheme::Green        => colorscheme_green(percentage),
-            ColorScheme::UltraFractal => colorscheme_ultrafractal(percentage),
+            ColorScheme::Ultra        => colorscheme_ultra(percentage),
         }
     }
 }
@@ -56,9 +56,9 @@ pub fn colorscheme_green(percentage: f32) -> u32 {
 #[allow(dead_code)]
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-pub fn colorscheme_ultrafractal(percentage: f32) -> u32 {
+pub fn colorscheme_ultra(percentage: f32) -> u32 {
     // Source: https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
-    let pallete = [
+    let pallet = vec![
         (0, 0, 0),
         (66, 30, 15),
         (25, 7, 26),
@@ -78,12 +78,18 @@ pub fn colorscheme_ultrafractal(percentage: f32) -> u32 {
         (106, 52, 3),
         (0, 0, 0),
     ];
-    let index = (percentage * (pallete.len()-1) as f32) as usize;
-    // let index =
-    //     if      percentage == 0.0 { 0 }
-    //     else if percentage == 1.0 { pallete.len()-1 }
-    //     else                      { (1. + percentage * (pallete.len() - 2) as f32) as usize }
-    // ;
-    let color = pallete[index];
+    colorscheme_pallete(percentage, &pallet)
+}
+
+
+#[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
+#[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
+pub fn colorscheme_pallete(percentage: f32, pallet: &Vec<(u8, u8, u8)>) -> u32 {
+    let index: usize =
+        if      percentage == 0.0 { 0 }
+        else if percentage == 1.0 { pallet.len() - 1 }
+        else    { (1. + (percentage * (pallet.len() - 2) as f32)) as usize }
+    ;
+    let color = pallet[index];
     rbga_to_u32(color.0,color.1, color.2, 255)
 }
