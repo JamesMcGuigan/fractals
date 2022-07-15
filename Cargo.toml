@@ -63,6 +63,7 @@ wasm-bindgen = "0.2.81"
 wee_alloc = "0.4.5"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 # yew_styles = { version="0.11", features = ["navbar"]}
+wasm-timer = "0.2.5"
 
 [dependencies.web-sys]
 version = "0.3.58"

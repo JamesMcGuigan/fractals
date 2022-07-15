@@ -6,6 +6,7 @@ extern crate yew;
 use image::{ImageFormat, save_buffer_with_format};
 use num_complex::Complex;
 use structopt::StructOpt;
+use wasm_timer::Instant;
 
 use fractals::mathematics::julia_set::julia_set;
 use fractals::services::colorschemes::ColorScheme;
@@ -34,7 +35,7 @@ struct Opt {
 
 fn main() {
     let opt = Opt::from_args();
-    let time_now= std::time::Instant::now();
+    let time_now = Instant::now();
     fractal_to_png(&opt);
     let time_taken = time_now.elapsed();
     println!("wrote: {} ({:.1?})", opt.output, time_taken);
