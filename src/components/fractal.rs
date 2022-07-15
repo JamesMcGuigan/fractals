@@ -10,6 +10,7 @@ use crate::elements;
 use crate::mathematics::julia_set::julia_set_canvas;
 #[allow(unused_imports)]
 use crate::services::colorschemes::{colorscheme_grayscale, colorscheme_hsl};
+use crate::services::colorschemes::ColorScheme;
 use crate::services::timer::now;
 
 #[allow(dead_code)]
@@ -76,15 +77,13 @@ impl Component for Fractal {
                 elements::canvas_context_2d(&canvas_elm)
                 .unwrap();
 
-            // let colorscheme = colorscheme_hsl;
-            let colorscheme = colorscheme_grayscale;
             julia_set_canvas(
                 &canvas_ctx,
                 width, height,
                 self.c.re, self.c.im,
                 self.zoom,
                 limit,
-                &Some(colorscheme),
+                ColorScheme::Green,
             );
         }
 

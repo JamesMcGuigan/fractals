@@ -18,3 +18,14 @@ Criterion Benchmarking
 
 Live Video Streaming
 - http://app.restream.io
+
+Manim 
+- Manim is an engine for precise programmatic animations, designed for creating explanatory math videos
+- https://github.com/3b1b/manim
+
+Epidemicsound
+- https://www.epidemicsound.com/campaign/invite-a-creator/
+- https://www.patreon.com/mathstown
+
+Ultra Fractal
+- https://www.ultrafractal.com/

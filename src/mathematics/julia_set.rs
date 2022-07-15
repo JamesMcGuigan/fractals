@@ -5,6 +5,7 @@ use gloo_console::log;
 use num_complex::Complex;
 use wasm_bindgen::Clamped;
 use web_sys::{CanvasRenderingContext2d, ImageData};
+use crate::services::colorschemes::ColorScheme;
 
 use crate::services::vectors::{map_colorscheme, vec_u32_to_u8};
 
@@ -18,12 +19,12 @@ pub fn julia_set_canvas(
     imag: f32,
     radius: f32,
     limit: u32,
-    colorscheme_fn: &Option<fn(f32) -> u32>,  // prevents #[wasm_bindgen]
+    colorscheme: ColorScheme,  // prevents #[wasm_bindgen]
 ) {
     // The real workhorse of this algorithm, generating pixel data
     let c = Complex::new(real, imag);
     let data_julia: Vec<u32> = julia_set(c, width, height, radius, limit);
-    let data_color: Vec<u32> = map_colorscheme(&data_julia, colorscheme_fn);
+    let data_color: Vec<u32> = map_colorscheme(&data_julia, colorscheme);
     let data_color_u8: Vec<u8> = vec_u32_to_u8(&data_color);
     let data_clamped = ImageData::new_with_u8_clamped_array_and_sh(
         Clamped(&data_color_u8), width, height

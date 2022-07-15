@@ -8,7 +8,7 @@ use num_complex::Complex;
 use structopt::StructOpt;
 
 use fractals::mathematics::julia_set::julia_set;
-use fractals::services::colorschemes::colorscheme_hsl;
+use fractals::services::colorschemes::ColorScheme;
 use fractals::services::vectors::{map_colorscheme, vec_u32_to_u8, vec_u8_rgba_to_rgb};
 
 // DOCS: https://docs.rs/structopt/latest/structopt/
@@ -42,7 +42,7 @@ fn main() {
 
 fn fractal_to_png(opt: &Opt) {
     let data_julia: Vec<u32> = julia_set(opt.c, opt.width, opt.height, opt.radius, opt.limit);
-    let data_color: Vec<u32> = map_colorscheme(&data_julia, &Some(colorscheme_hsl));
+    let data_color: Vec<u32> = map_colorscheme(&data_julia, ColorScheme::Green);
     let data_color_u8_rgba: Vec<u8> = vec_u32_to_u8(&data_color);
     let data_color_u8_rgb:  Vec<u8> = vec_u8_rgba_to_rgb(&data_color_u8_rgba);
     let format = ImageFormat::from_path(&opt.output).unwrap();
