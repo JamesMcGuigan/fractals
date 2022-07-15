@@ -79,12 +79,12 @@ features = [
 # cargo install --git https://github.com/rust-lang/measureme --branch stable crox
 # cargo install --git https://github.com/rust-lang/measureme --branch stable summarize
 [dev-dependencies]
-cargo-bloat = "0.11.1"
-cargo-expand = "1.0.27"
-cargo-generate = "0.15.2"
-cargo-llvm-lines = "0.4.16"
-cargo-web = "0.6.26"
+#cargo-bloat = "0.11.1"
+#cargo-expand = "1.0.27"
+#cargo-generate = "0.15.2"
+#cargo-llvm-lines = "0.4.16"
+#cargo-web = "0.6.26"
 #cargo-udeps = "0.1.30"  # error: failed to run custom build command for `libz-sys v1.1.8` with wasm32-unknown-unknown
 #flamegraph = "0.6.1"
 grass = "0.11.0"
-wasm-bindgen-cli = "0.2.81"
+#wasm-bindgen-cli = "0.2.81"
