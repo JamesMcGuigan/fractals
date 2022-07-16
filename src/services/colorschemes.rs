@@ -64,7 +64,7 @@ pub fn colorscheme_ultra(percentage: f32) -> u32 {
     // Source: https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
     let pallet = vec![
         (0, 0, 0),
-        (66, 30, 15),
+        // (66, 30, 15),  // Nasty brown color
         (25, 7, 26),
         (9, 1, 47),
         (4, 4, 73),
