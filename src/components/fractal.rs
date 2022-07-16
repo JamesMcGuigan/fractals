@@ -23,6 +23,7 @@ pub struct Fractal {
     z: Complex<f32>,
     c: Complex<f32>,
     zoom: f32,
+    limit: u32,
     colorscheme: ColorScheme,
     node_canvas: NodeRef,
     listener: Option<EventListener>,
@@ -44,6 +45,7 @@ impl Component for Fractal {
             z: Complex::new(0.0,0.0),
             c: Complex::new(0.25,0.25),
             zoom: 2.0,
+            limit: 32,
             colorscheme: ColorScheme::Green,
             node_canvas: NodeRef::default(),
             listener: None,
@@ -92,7 +94,6 @@ impl Component for Fractal {
 
     fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
         let time_start = now();
-        let limit = 32;
 
         // let canvas_elm = canvas("mandelbrot").unwrap();
         let canvas_elm = self.node_canvas
@@ -120,7 +121,7 @@ impl Component for Fractal {
                 width, height,
                 self.c.re, self.c.im,
                 self.zoom,
-                limit,
+                self.limit,
                 self.colorscheme,
             );
         }
