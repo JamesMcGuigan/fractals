@@ -1,23 +1,18 @@
-/// #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
-/// #![cfg_attr(debug_assertions, allow(dead_code))]
-extern crate fractals;
-extern crate yew;
+use std::time::Instant;
 
 use image::{ImageFormat, save_buffer_with_format};
 use num_complex::Complex;
 use structopt::StructOpt;
-// use wasm_timer::Instant;
 
 use fractals::mathematics::julia_set::julia_set;
 use fractals::services::colorschemes::ColorScheme;
 use fractals::services::vectors::{map_colorscheme, vec_u32_to_u8, vec_u8_rgba_to_rgb};
 
-
 // DOCS: https://docs.rs/structopt/latest/structopt/
 // DOCS: https://www.youtube.com/watch?v=Des3zZuTbhk&ab_channel=CodingTech
 // TODO: Add XY coords
 #[derive(Debug, StructOpt)]
-#[structopt(name = "example", about = "An example of StructOpt usage.")]
+#[structopt(name = "julia_image", about = "Generate a julia fractal image file")]
 struct Opt {
     #[structopt(short, long, default_value="fractal.png")]
     output: String,
@@ -36,14 +31,14 @@ struct Opt {
 
 fn main() {
     // BUG: Instant::now() causes panic in browser WASM ???
-    // let time_now = Instant::now();
+    // BUGFIX: Move CLI into separate module
+    let time_now = Instant::now();
 
     let opt = Opt::from_args();
     fractal_to_png(&opt);
 
-    // let time_taken = time_now.elapsed();
-    // println!("wrote: {} ({:.1?})", opt.output, time_taken);
-    println!("wrote: {}", opt.output);
+    let time_taken = time_now.elapsed();
+    println!("wrote: {} ({:.1?})", opt.output, time_taken);
 }
 
 fn fractal_to_png(opt: &Opt) {

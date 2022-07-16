@@ -10,9 +10,10 @@ edition = "2018"
 #[lib]
 #crate-type = ["rlib", "cdylib"]   # Only required for wasm-pack
 
-[[bin]]
-name = "julia_image"
-path = "src/bin/julia_image.rs"
+### BUGFX: Move CLI to prevent Yew Trunk WASM conflicts
+#[[bin]]
+#name = "julia_image"
+#path = "fractals_cli/src/bin/julia_image.rs"
 
 
 

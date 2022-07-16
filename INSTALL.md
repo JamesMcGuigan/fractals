@@ -47,6 +47,7 @@ ROOT:    ./
 
 CLI
 ```
+cd fractals_cli;
 cargo build; RUST_BACKTRACE=1 ./target/debug/julia_image
 
 cargo build --release; 
