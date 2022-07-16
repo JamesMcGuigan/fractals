@@ -8,8 +8,9 @@
 # jobs = 1  # 1456.7s (24m 16.7s)
 
 
-## mold is a faster linker - https://github.com/rui314/mold
-## $ readelf -p .comment target/release/fractals
-[target.x86_64-unknown-linux-gnu]
-linker = "clang"
-rustflags = ["-C", "link-arg=--ld-path=/usr/bin/mold"]
+### BUG: Vercel Error: linker `clang` not found
+### mold is a faster linker - https://github.com/rui314/mold
+### $ readelf -p .comment target/release/fractals
+#[target.x86_64-unknown-linux-gnu]
+#linker = "clang"
+#rustflags = ["-C", "link-arg=--ld-path=/usr/bin/mold"]
