@@ -1,8 +1,12 @@
+// use std::fmt;
 use contracts::requires;
+use enum_iterator::Sequence;
+use strum_macros::{Display, EnumString};
 
 use crate::services::color_convert::{grayscale_to_u32, hsl_to_u32, rbga_to_u32};
 use crate::services::colors::*;
 
+#[derive(Copy, Clone, Debug, PartialEq, Display, EnumString, Sequence)]
 pub enum ColorScheme {
     HSL,
     Grayscale,

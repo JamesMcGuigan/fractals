@@ -1,9 +1,13 @@
-// Source: https://yew.rs/docs/getting-started/build-a-sample-app
+// DOCS: https://yew.rs/docs/getting-started/build-a-sample-app
 
+use enum_iterator;
+use enum_iterator::all;
 use gloo_console::log;
 use gloo_events::EventListener;
 use num_complex::Complex;
-use web_sys::CanvasRenderingContext2d;
+use wasm_bindgen::JsCast;
+use web_sys::{CanvasRenderingContext2d, HtmlSelectElement};
+use web_sys::EventTarget;
 use yew::prelude::*;
 
 use crate::elements;
@@ -19,12 +23,14 @@ pub struct Fractal {
     z: Complex<f32>,
     c: Complex<f32>,
     zoom: f32,
+    colorscheme: ColorScheme,
     node_canvas: NodeRef,
     listener: Option<EventListener>,
 }
 
 pub enum Msg {
-    Resize
+    Resize,
+    ColorScheme(ColorScheme),
 }
 
 
@@ -38,18 +44,50 @@ impl Component for Fractal {
             z: Complex::new(0.0,0.0),
             c: Complex::new(0.25,0.25),
             zoom: 2.0,
+            colorscheme: ColorScheme::Green,
             node_canvas: NodeRef::default(),
             listener: None,
         }
     }
 
-    fn view(&self, _ctx: &Context<Self>) -> Html {
+    fn view(&self, ctx: &Context<Self>) -> Html {
         log!("Fractal::view()");
+        let colorschemes: Vec<ColorScheme> = all::<ColorScheme>().collect();
         html! {
             <div class="fractal">
                 <canvas id="mandelbrot" ref={self.node_canvas.clone()}/>
+                <div class="controls">
+                    <select name="colorscheme"
+                        onchange={
+                            ctx.link().callback(move |event: Event| {
+                                // DOCS: https://yew.rs/docs/concepts/html/events
+                                // DOCS: https://docs.rs/web-sys/latest/web_sys/struct.Event.html
+                                // DOCS: https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.HtmlSelectElement.html
+                                let target: EventTarget = event.target().unwrap();
+                                let select: HtmlSelectElement = target
+                                    .dyn_ref::<HtmlSelectElement>().unwrap().clone();
+                                let value: String = select.value();
+                                let colorscheme: ColorScheme = value.parse().unwrap();
+                                Msg::ColorScheme(colorscheme)
+                            })
+                        }
+                    >
+                    {
+                        colorschemes.iter().map(|colorscheme| html!{
+                            <option
+                                value={ colorscheme.to_string() }
+                                selected={ self.colorscheme == *colorscheme }
+                            >
+                                { colorscheme.to_string() }
+                            </option>
+                        })
+                        .collect::<Vec<Html>>()
+                    }
+                    </select>
+                </div>
             </div>
         }
+
     }
 
     fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
@@ -83,7 +121,7 @@ impl Component for Fractal {
                 self.c.re, self.c.im,
                 self.zoom,
                 limit,
-                ColorScheme::Green,
+                self.colorscheme,
             );
         }
 
@@ -94,6 +132,10 @@ impl Component for Fractal {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         log!("Fractal::update()");
         match msg {
+            Msg::ColorScheme(colorscheme) => {
+                self.colorscheme = colorscheme;
+                true  // rerender
+            },
             Msg::Resize => {
                 let window = elements::window().unwrap();
                 // let canvas_elm = elements::canvas("mandelbrot").unwrap();
@@ -104,7 +146,7 @@ impl Component for Fractal {
                 let height = window.inner_height().unwrap().as_f64().unwrap();
                 canvas_elm.set_width( width  as u32);
                 canvas_elm.set_height(height as u32);
-                true    // rerender
+                true  // rerender
             }
         }
     }
