@@ -6,11 +6,12 @@ extern crate yew;
 use image::{ImageFormat, save_buffer_with_format};
 use num_complex::Complex;
 use structopt::StructOpt;
-use wasm_timer::Instant;
+// use wasm_timer::Instant;
 
 use fractals::mathematics::julia_set::julia_set;
 use fractals::services::colorschemes::ColorScheme;
 use fractals::services::vectors::{map_colorscheme, vec_u32_to_u8, vec_u8_rgba_to_rgb};
+
 
 // DOCS: https://docs.rs/structopt/latest/structopt/
 // DOCS: https://www.youtube.com/watch?v=Des3zZuTbhk&ab_channel=CodingTech
@@ -34,11 +35,15 @@ struct Opt {
 
 
 fn main() {
+    // BUG: Instant::now() causes panic in browser WASM ???
+    // let time_now = Instant::now();
+
     let opt = Opt::from_args();
-    let time_now = Instant::now();
     fractal_to_png(&opt);
-    let time_taken = time_now.elapsed();
-    println!("wrote: {} ({:.1?})", opt.output, time_taken);
+
+    // let time_taken = time_now.elapsed();
+    // println!("wrote: {} ({:.1?})", opt.output, time_taken);
+    println!("wrote: {}", opt.output);
 }
 
 fn fractal_to_png(opt: &Opt) {
