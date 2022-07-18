@@ -82,13 +82,13 @@ pub fn colorscheme_ultra(percentage: f32) -> u32 {
         (106, 52, 3),
         (0, 0, 0),
     ];
-    colorscheme_pallete(percentage, &pallet)
+    colorscheme_palette(percentage, &pallet)
 }
 
 
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-pub fn colorscheme_pallete(percentage: f32, pallet: &Vec<(u8, u8, u8)>) -> u32 {
+pub fn colorscheme_palette(percentage: f32, pallet: &Vec<(u8, u8, u8)>) -> u32 {
     let index: usize =
         if      percentage == 0.0 { 0 }
         else if percentage == 1.0 { pallet.len() - 1 }
