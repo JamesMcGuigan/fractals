@@ -1,27 +1,21 @@
 // DOCS: https://yew.rs/docs/getting-started/build-a-sample-app
 
-use enum_iterator;
-use enum_iterator::all;
 use gloo_console::log;
 use gloo_events::EventListener;
 use num_complex::Complex;
-use wasm_bindgen::JsCast;
-use web_sys::{CanvasRenderingContext2d, HtmlSelectElement};
-use web_sys::EventTarget;
+use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
 
+use crate::components::select::Select;
 use crate::elements;
 use crate::mathematics::julia_set::julia_set_canvas;
-#[allow(unused_imports)]
-use crate::services::colorschemes::{colorscheme_grayscale, colorscheme_hsl};
 use crate::services::colorschemes::ColorScheme;
 use crate::services::timer::now;
 
-#[allow(dead_code)]
 #[derive(Debug)]
 pub struct Fractal {
-    z: Complex<f32>,
-    c: Complex<f32>,
+    _z: Complex<f32>,
+    c:  Complex<f32>,
     zoom: f32,
     limit: u32,
     colorscheme: ColorScheme,
@@ -31,9 +25,8 @@ pub struct Fractal {
 
 pub enum Msg {
     Resize,
-    ColorScheme(ColorScheme),
+    Color(ColorScheme),
 }
-
 
 impl Component for Fractal {
     type Message = Msg;
@@ -42,8 +35,8 @@ impl Component for Fractal {
     fn create(_ctx: &Context<Self>) -> Self {
         log!("Fractal::create()");
         Self {
-            z: Complex::new(0.0,0.0),
-            c: Complex::new(0.25,0.25),
+            _z: Complex::new(0.0,0.0),
+            c:  Complex::new(0.25,0.25),
             zoom: 2.0,
             limit: 32,
             colorscheme: ColorScheme::Green,
@@ -54,42 +47,22 @@ impl Component for Fractal {
 
     fn view(&self, ctx: &Context<Self>) -> Html {
         log!("Fractal::view()");
-        let colorschemes: Vec<ColorScheme> = all::<ColorScheme>().collect();
+        // BUGFIX: declare .callback() outside DOM to avoid ctx lifetimes issue
+        let colorscheme_onchange = ctx.link().callback(|color: String|
+            Msg::Color(ColorScheme::from_string(color))
+        );
         html! {
             <div class="fractal">
                 <canvas id="mandelbrot" ref={self.node_canvas.clone()}/>
                 <div class="controls">
-                    <select name="colorscheme"
-                        onchange={
-                            ctx.link().callback(move |event: Event| {
-                                // DOCS: https://yew.rs/docs/concepts/html/events
-                                // DOCS: https://docs.rs/web-sys/latest/web_sys/struct.Event.html
-                                // DOCS: https://rustwasm.github.io/wasm-bindgen/api/web_sys/struct.HtmlSelectElement.html
-                                let target: EventTarget = event.target().unwrap();
-                                let select: HtmlSelectElement = target
-                                    .dyn_ref::<HtmlSelectElement>().unwrap().clone();
-                                let value: String = select.value();
-                                let colorscheme: ColorScheme = value.parse().unwrap();
-                                Msg::ColorScheme(colorscheme)
-                            })
-                        }
-                    >
-                    {
-                        colorschemes.iter().map(|colorscheme| html!{
-                            <option
-                                value={ colorscheme.to_string() }
-                                selected={ self.colorscheme == *colorscheme }
-                            >
-                                { colorscheme.to_string() }
-                            </option>
-                        })
-                        .collect::<Vec<Html>>()
-                    }
-                    </select>
+                    <Select
+                        options={  ColorScheme::values() }
+                        selected={ self.colorscheme.to_string() }
+                        onchange={ colorscheme_onchange }
+                    />
                 </div>
             </div>
         }
-
     }
 
     fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
@@ -133,7 +106,7 @@ impl Component for Fractal {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         log!("Fractal::update()");
         match msg {
-            Msg::ColorScheme(colorscheme) => {
+            Msg::Color(colorscheme) => {
                 self.colorscheme = colorscheme;
                 true  // rerender
             },
