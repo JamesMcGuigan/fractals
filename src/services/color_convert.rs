@@ -55,6 +55,7 @@ pub fn grayscale_to_u32(percentage: f32) -> u32 {
 /// assert_eq!(rbga_to_u32(255,255,255,255), WHITE);
 /// assert_eq!(rbga_to_u32(0,0,0,255),       BLACK);
 /// ```
+#[allow(clippy::identity_op)]
 pub fn rbga_to_u32(r: u8, g: u8, b: u8, a: u8) -> u32 {
     ((r as u32) << 24) | ((g as u32) << 16) | ((b as u32) << 8) | ((a as u32) << 0)
 }

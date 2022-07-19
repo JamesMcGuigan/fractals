@@ -16,7 +16,7 @@ pub fn vec_u32_to_u8(data: &Vec<u32>) -> Vec<u8> {
 }
 
 // Remove alpha channel from RGBA stream - required for save_buffer_with_format()
-pub fn vec_u8_rgba_to_rgb(rgba: &Vec<u8>) -> Vec<u8> {
+pub fn vec_u8_rgba_to_rgb(rgba: &[u8]) -> Vec<u8> {
     rgba.iter()
         .enumerate()
         .filter(|(i,_x)| i % 4 != 3)
