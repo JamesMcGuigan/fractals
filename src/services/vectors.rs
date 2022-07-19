@@ -1,5 +1,10 @@
 use crate::services::colorschemes::ColorScheme;
 
+/// Cast Vec<u32> to Vec<u8> without modifying underlying byte data
+/// ```
+/// # use fractals::services::vectors::vec_u32_to_u8;
+/// assert_eq!( vec_u32_to_u8(&vec![ 0x12345678 ]), vec![ 0x12u8, 0x34u8, 0x56u8, 0x78u8 ]);
+/// ```
 #[allow(clippy::identity_op)]
 pub fn vec_u32_to_u8(data: &Vec<u32>) -> Vec<u8> {
     // TODO: https://stackoverflow.com/questions/72631065/how-to-convert-a-u32-array-to-a-u8-array-in-place
@@ -15,7 +20,12 @@ pub fn vec_u32_to_u8(data: &Vec<u32>) -> Vec<u8> {
     output
 }
 
-// Remove alpha channel from RGBA stream - required for save_buffer_with_format()
+/// Remove alpha channel from RGBA stream - required for save_buffer_with_format()
+/// ```
+/// # use fractals::services::vectors::vec_u8_rgba_to_rgb;
+/// assert_eq!( vec_u8_rgba_to_rgb(&vec![ 0x12, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78 ]),
+///                                 vec![ 0x12, 0x34, 0x56,       0x12, 0x34, 0x56,      ]  );
+/// ```
 pub fn vec_u8_rgba_to_rgb(rgba: &[u8]) -> Vec<u8> {
     rgba.iter()
         .enumerate()
@@ -24,7 +34,7 @@ pub fn vec_u8_rgba_to_rgb(rgba: &[u8]) -> Vec<u8> {
         .collect::<Vec<u8>>()
 }
 
-
+/// Map colorscheme.color(percentage) over &data
 pub fn map_colorscheme(data: &[u32], colorscheme: ColorScheme) -> Vec<u32> {
     let max = *data.iter().max().unwrap_or(&1) as f32;
     let output32 = data.iter()
@@ -35,26 +45,4 @@ pub fn map_colorscheme(data: &[u32], colorscheme: ColorScheme) -> Vec<u32> {
         })
         .collect::<Vec<u32>>();
     output32
-}
-
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_vec_u32_to_u8() {
-        let input:    Vec<u32> = vec![ 0x12345678 ];
-        let expected: Vec<u8>  = vec![ 0x12, 0x34, 0x56, 0x78 ];
-        let output = vec_u32_to_u8(&input);
-        assert_eq!(expected, output);
-    }
-
-    #[test]
-    fn test_vec_u8_rgba_to_rgb() {
-        let input:    Vec<u8> = vec![ 0x12, 0x34, 0x56, 0x78, 0x12, 0x34, 0x56, 0x78 ];
-        let expected: Vec<u8> = vec![ 0x12, 0x34, 0x56,       0x12, 0x34, 0x56       ];
-        let output = vec_u8_rgba_to_rgb(&input);
-        assert_eq!(expected, output);
-    }
 }
