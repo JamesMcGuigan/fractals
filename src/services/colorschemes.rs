@@ -48,17 +48,36 @@ impl ColorScheme {
             .map(|color| color.to_string())
             .collect()
     }
-
-    #[ensures(ColorScheme::values().iter().any(|value| value == name), "ColorScheme::from()")]
-    pub fn from(name: &str) -> ColorScheme {
-        let options: String = ColorScheme::values().into_iter()
-            .intersperse("|".to_string()).collect()
-        ;
-        name.parse()
-            .unwrap_or_else(|_| panic!("ColorScheme::from({}) not in ({})", name, options))
+    /// Return string values of the enum, joined together as a single string
+    pub fn values_join(sep: &str) -> String {
+        // #![feature(iter_intersperse)] -> std::iter::Intersperse
+        // let options: String = ColorScheme::values().into_iter().intersperse("|".to_string()).collect();
+        itertools::intersperse(
+            ColorScheme::values().into_iter(),
+            sep.to_string()
+        ).collect()
     }
+
+    /// Create ColorScheme from &str representation
+    /// ```
+    /// # use fractals::services::colorschemes::ColorScheme;
+    /// assert_eq!( ColorScheme::Ultra, ColorScheme::from_string(String::from("Ultra")) );
+    /// assert_eq!( ColorScheme::Ultra, ColorScheme::from_string(ColorScheme::Ultra.to_string()) );
+    /// ```
     pub fn from_string(name: String) -> ColorScheme {
         ColorScheme::from(name.as_str())
+    }
+    /// Create ColorScheme from &str representation
+    /// ```
+    /// # use fractals::services::colorschemes::ColorScheme;
+    /// assert_eq!( ColorScheme::Ultra, ColorScheme::from("Ultra") );
+    /// assert_eq!( ColorScheme::Ultra, ColorScheme::from(&ColorScheme::Ultra.to_string()) );
+    /// ```
+    #[ensures(ColorScheme::values().iter().any(|value| value == name), "ColorScheme::from()")]
+    pub fn from(name: &str) -> ColorScheme {
+        let values = ColorScheme::values_join("|");
+        name.parse()
+            .unwrap_or_else(|_| panic!("ColorScheme::from({}) not in ({})", name, values))
     }
 }
 
