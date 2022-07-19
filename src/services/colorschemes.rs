@@ -48,15 +48,6 @@ impl ColorScheme {
             .map(|color| color.to_string())
             .collect()
     }
-    /// Return string values of the enum, joined together as a single string
-    pub fn values_join(sep: &str) -> String {
-        // #![feature(iter_intersperse)] -> std::iter::Intersperse
-        // let options: String = ColorScheme::values().into_iter().intersperse("|".to_string()).collect();
-        itertools::intersperse(
-            ColorScheme::values().into_iter(),
-            sep.to_string()
-        ).collect()
-    }
 
     /// Create ColorScheme from &str representation
     /// ```
@@ -75,9 +66,9 @@ impl ColorScheme {
     /// ```
     #[ensures(ColorScheme::values().iter().any(|value| value == name), "ColorScheme::from()")]
     pub fn from(name: &str) -> ColorScheme {
-        let values = ColorScheme::values_join("|");
+        let options = ColorScheme::values().join("|");
         name.parse()
-            .unwrap_or_else(|_| panic!("ColorScheme::from({}) not in ({})", name, values))
+            .unwrap_or_else(|_| panic!("ColorScheme::from({}) not in ({})", name, options))
     }
 }
 
