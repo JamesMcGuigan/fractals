@@ -27,6 +27,9 @@ Epidemicsound
 - https://www.epidemicsound.com/campaign/invite-a-creator/
 - https://www.patreon.com/mathstown
 
+OpenSea - NFTs
+- https://opensea.io/
+
 Ultra Fractal
 - https://www.ultrafractal.com/
 
