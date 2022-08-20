@@ -9,5 +9,8 @@ vercel.json
 }
 ```
 
+Administration:
+- https://vercel.com/jamesmcguigan/fractals/settings/domains
+
 DOCS:
 - https://vercel.com/docs/project-configuration#project/rewrites
