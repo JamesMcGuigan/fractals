@@ -1,4 +1,4 @@
-# Installation and Setup
+# Build + Install
 
 Install
 ```bash
@@ -36,13 +36,12 @@ http-server dist/               # Javascript webserver
 see start -b 8080 -p dist/      # Rust webserver
 ```
 
-Vercel Configuration
-- https://vercel.com/jamesmcguigan/fractals/
+
+Cargo Expand
 ```
-BUILD:   source $HOME/.cargo/env; trunk clean; trunk build --release
-OUTPUT:  dist
-INSTALL: curl https://sh.rustup.rs -sSf | sh -s -- -y; source $HOME/.cargo/env; rustup target add wasm32-unknown-unknown; cargo install trunk; cargo install --path .; 
-ROOT:    ./
+cargo expand --lib
+cargo expand --bin fractals
+cargo expand --bin julia_image
 ```
 
 CLI
@@ -52,11 +51,4 @@ cargo build; RUST_BACKTRACE=1 ./target/debug/julia_image
 
 cargo build --release; 
 ./target/release/julia_image -c 0.5+0.5i -r 1 -o fractal.jpg
-```
-
-Cargo Expand
-```
-cargo expand --lib
-cargo expand --bin fractals
-cargo expand --bin julia_image
 ```

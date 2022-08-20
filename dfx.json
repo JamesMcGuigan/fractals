@@ -1,0 +1,9 @@
+{
+    "canisters": {
+        "www": {
+            "type": "assets",
+            "source": ["dist"],
+            "build": "cargo build --release"
+        }
+    }
+}

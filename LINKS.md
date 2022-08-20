@@ -59,6 +59,7 @@ Bitmaps
 - https://lib.rs/crates/intmap
 
 Numbers
+  - https://docs.rs/candid/0.6.20/candid/types/number/struct.Nat.html - Candid Natural Number
   - https://docs.rs/num-bigint/0.4.3/num_bigint/struct.BigInt.html
   - https://crates.io/crates/crypto-bigint
   - https://crates.io/crates/ibig
@@ -82,6 +83,7 @@ Machine Learning
 - https://crates.io/crates/juice + https://crates.io/crates/juice-traits
 - https://crates.io/crates/rusty-machine
 
+
 SMT Solvers
 - https://crates.io/keywords/smt
   - https://crates.io/crates/haybale  - Native Rust
@@ -96,6 +98,7 @@ SMT Solvers
 - https://crates.io/crates/good_lp    - multi-solver API
 - https://crates.io/crates/monotonic_solver - Avalog, an experimental Avatar Logic with a Prolog-like syntax.
 
+
 AI Search
 - https://crates.io/keywords/ai?page=2&sort=downloads
   - https://crates.io/crates/juggernaut
@@ -105,6 +108,7 @@ AI Search
 - https://crates.io/crates/sm           - SM – a static State Machine library
 - https://crates.io/crates/organelle    - Emergent AI
 - https://crates.io/crates/pleco        - Stockfish rewritten in Rust 
+
 
 Machine Learning
 - https://github.com/autumnai/leaf        - open Machine Learning Framework
@@ -122,6 +126,7 @@ Machine Learning
   - https://github.com/sonos/tract          - Sonos' Neural Network inference engine.
   - http://www.dbcrossbar.org/              - large dataset conversion
   - https://crates.io/crates/rhuffle        - Random Shuffle huge files
+
 
 NLP
 - https://github.com/guillaume-be/rust-bert 
@@ -141,6 +146,7 @@ NLP
 - https://crates.io/crates/ttaw - talking to a wall, a piecemeal natural language processing library.
 - https://crates.io/crates/vtext - NLP in Rust with Python bindings
 
+
 Graphics 
 - https://crates.io/crates/pathfinder_canvas - GPU Canvas
 - https://crates.io/crates/magick_rust       - ImageMagick Bindings
@@ -157,7 +163,8 @@ Graphics
 - https://crates.io/crates/rapier3d       - 2D + 3D physics engine  
 - https://crates.io/crates/bevy_rapier2d
 - https://crates.io/crates/poloto         - A simple 2D plotting library that outputs graphs to SVG that can be styled using CSS.
-- 
+
+
 Colors
 - https://crates.io/crates/colorous       - sequential, diverging and categorical color schemes ported from d3-scale-chromatic.
 - https://crates.io/crates/palette        - A color management and conversion library
@@ -206,8 +213,31 @@ Profilers
 - https://crates.io/crates/hprof - Hierarchical profiling
 - https://crates.io/crates/tokei - Count Lines of Code
 
+Atomics / Channels
+- https://docs.rs/parking_lot/latest/parking_lot/ - Mutex, RwLock, Condvar, Once
+- https://docs.rs/crossbeam/latest/crossbeam/ - AtomicCell, SegQueue, channels (better for high-contention)
+- https://docs.rs/flume/latest/flume/ - fast multi-producer, multi-consumer channel (better for low-contention)
+- https://docs.rs/tokio/latest/tokio/index.html - async io
+
+Actors
+- https://actix.rs/
+- https://github.com/actix/actix-web
+- https://simplabs.com/blog/2018/06/11/actix/ 
+  - actix is the low-level actor framework that powers actix-web, a high-performance web framework for the Rust programming language.
+
+
+Caching
+- https://github.com/moka-rs/moka - fast, concurrent cache - inspired by Java Caffeine
 
 Other
 - https://crates.io/crates/cracken - Cracken is a fast password wordlist generator, 
 - https://crates.io/crates/color-backtrace - colorful backtraces
- 
+
+IDEs
+- CoC + NeoVim - https://github.com/neoclide/coc.nvim
+
+
+ICP
+- Candid   - https://docs.rs/candid/0.6.20/candid/index.html
+- DFX      - https://internetcomputer.org/docs/current/references/cli-reference/dfx-build/
+- DFX.json - https://internetcomputer.org/docs/current/references/dfx-json-reference/
