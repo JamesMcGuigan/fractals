@@ -1,4 +1,4 @@
-# Build + Install
+# Build + Install + Run
 
 Install
 ```bash
