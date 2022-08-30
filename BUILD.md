@@ -21,13 +21,14 @@ Validate
 RUSTFLAGS="-Z macro-backtrace" cargo check
 RUSTFLAGS="-Z macro-backtrace" cargo clippy
 cargo expand --lib | cat 
-cargo expand --bin yewcounter | cat 
+cargo expand --bin yewcounter | cat
 ```
 
 Build
 ```bash
 ## Use Trunk - https://yew.rs/docs/getting-started/project-setup/using-trunk
 cargo install --path .
+cargo update
 cargo udeps
 trunk clean
 trunk serve --open  # Works - requires index.html
