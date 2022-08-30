@@ -1,8 +1,8 @@
-// #![feature(iter_intersperse)]  // #![feature]` may not be used on the stable release channel
-// #![allow(unstable_name_collisions)]
-// #![cfg_attr(debug_assertions, allow(dead_code, unused_imports))]
-// #![cfg_attr(debug_assertions, allow(dead_code))]
-extern crate yew;
+// LINT FLAGS: https://doc.rust-lang.org/rustc/lints/groups.html
+#![warn(rust_2018_idioms, nonstandard_style)]
+#![warn(rust_2018_compatibility, rust_2021_compatibility, future_incompatible)]
+// #![allow(unused)]
+// #![cfg_attr(debug_assertions)]
 
 mod _wee_alloc;
 pub mod components;

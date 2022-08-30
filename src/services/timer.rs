@@ -1,6 +1,6 @@
 // DOCS: https://rustwasm.github.io/book/reference/time-profiling.html
 
-extern crate web_sys;
+use web_sys;
 
 pub fn now() -> f64 {
     web_sys::window()
