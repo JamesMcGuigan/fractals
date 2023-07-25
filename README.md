@@ -17,7 +17,11 @@
 ## CLI
 ![](./fractals_cli/fractal.png)
 ```
+### Build
+cargo clean
 cargo build --release
-cargo run   --release --bin julia_image -q
-/target/release/julia_image -c 0.5+0.5i -r 1 -o fractal.png
+
+### Run
+cargo run   --release --bin julia_image -q    # builds and runs ./target/release/julia_image with default options
+./target/release/julia_image -c 0.5+0.5i -r 1 -o fractal.png
 ```
