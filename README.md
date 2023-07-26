@@ -26,3 +26,6 @@ cargo run   --release --bin julia_image -q     # builds, runs, outputs: fractal.
 ./target/release/julia_image -c 0.5+0.5i -r 1 -o fractal.zoom.png
 ls -la fractal.*
 ```
+
+## Bug Reports
+- [https://github.com/image-rs/image-png/issues/404](PNG compression filesize changes between v0.17.5 - v0.17.9 #404) 
