@@ -31,13 +31,28 @@ impl Component for CanvasQuestion {
         }
     }
 
+    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
+        log!("Component::Canvas::update()");
+        match msg {
+            Msg::Resize => {
+                let window = elements::window().unwrap();
+                let canvas = elements::canvas("canvas").unwrap();
+                let width  = window.inner_width().unwrap().as_f64().unwrap();
+                let height = window.inner_height().unwrap().as_f64().unwrap();
+                canvas.set_width( width  as u32);
+                canvas.set_height(height as u32);
+                true    // rerender
+            }
+        }
+    }
+
+
     fn view(&self, _ctx: &Context<Self>) -> Html {
         log!("Component::Canvas::view()");
         html! {
             <canvas id="canvas" ref={self.node_canvas.clone()}/>
         }
     }
-
 
     fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
         if first_render {
@@ -64,20 +79,5 @@ impl Component for CanvasQuestion {
         let _width  = canvas_elm.width();
         let _height = canvas_elm.height();
         log!(format!("Component::Fractal::rendered({_width} x {_height})").as_str());
-    }
-
-    fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
-        log!("Component::Canvas::update()");
-        match msg {
-            Msg::Resize => {
-                let window = elements::window().unwrap();
-                let canvas = elements::canvas("canvas").unwrap();
-                let width  = window.inner_width().unwrap().as_f64().unwrap();
-                let height = window.inner_height().unwrap().as_f64().unwrap();
-                canvas.set_width( width  as u32);
-                canvas.set_height(height as u32);
-                true    // rerender
-            }
-        }
     }
 }
