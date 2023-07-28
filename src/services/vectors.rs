@@ -9,7 +9,7 @@ use crate::services::colorschemes::ColorScheme;
 pub fn vec_u32_to_u8(data: &Vec<u32>) -> Vec<u8> {
     // TODO: https://stackoverflow.com/questions/72631065/how-to-convert-a-u32-array-to-a-u8-array-in-place
     // TODO: https://stackoverflow.com/questions/29037033/how-to-slice-a-large-veci32-as-u8
-    let capacity = 32/8 * data.len() as usize;  // 32/8 == 4
+    let capacity = 32/8 * data.len();  // 32/8 == 4
     let mut output = Vec::<u8>::with_capacity(capacity);
     for &value in data {
         output.push((value >> 24) as u8);  // r
