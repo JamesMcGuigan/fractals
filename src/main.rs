@@ -11,6 +11,6 @@ fn main() {
     // DOCS: https://yew.rs/docs/next/concepts/html/events#event-bubbling
     // yew::set_event_bubbling(false);
 
-    yew::Renderer::<fractals::components::Fractal>::new().render();
+    yew::Renderer::<fractals::components::v1::Fractal>::new().render();
     // yew::Renderer::<fractals::components::CanvasQuestion>::new().render();
 }

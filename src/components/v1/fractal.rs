@@ -6,7 +6,7 @@ use num_complex::Complex;
 use web_sys::CanvasRenderingContext2d;
 use yew::prelude::*;
 
-use crate::components::select::Select;
+use crate::components::v1::select::Select;
 use crate::elements;
 use crate::mathematics::julia_set::julia_set_canvas;
 use crate::services::colorschemes::ColorScheme;
