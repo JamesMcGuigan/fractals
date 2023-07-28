@@ -65,17 +65,17 @@ impl Component for Fractal {
         }
     }
 
-    fn rendered(&mut self, ctx: &Context<Self>, first_render: bool) {
+    fn rendered(&mut self, ctx: &Context<Self>, is_first_render: bool) {
         let time_start = now();
 
         // let canvas_elm = canvas("mandelbrot").unwrap();
-        let canvas_elm = self.node_canvas
+        let canvas_element = self.node_canvas
             .cast::<web_sys::HtmlCanvasElement>()
             .expect("HtmlCanvasElement");
-        let width  = canvas_elm.width();
-        let height = canvas_elm.height();
+        let width  = canvas_element.width();
+        let height = canvas_element.height();
 
-        if first_render {
+        if is_first_render {
             ctx.link().send_message(Msg::Resize);
             let onresize = ctx.link().callback(|_: Event| Msg::Resize);
             let listener = EventListener::new(
@@ -86,7 +86,7 @@ impl Component for Fractal {
             self.listener = Some(listener);
         } else {
             let canvas_ctx: CanvasRenderingContext2d =
-                elements::canvas_context_2d(&canvas_elm)
+                elements::canvas_context_2d(&canvas_element)
                 .unwrap();
 
             julia_set_canvas(
@@ -113,13 +113,13 @@ impl Component for Fractal {
             Msg::Resize => {
                 let window = elements::window().unwrap();
                 // let canvas_elm = elements::canvas("mandelbrot").unwrap();
-                let canvas_elm = self.node_canvas
+                let canvas_element = self.node_canvas
                     .cast::<web_sys::HtmlCanvasElement>()
                     .expect("HtmlCanvasElement");
                 let width  = window.inner_width().unwrap().as_f64().unwrap();
                 let height = window.inner_height().unwrap().as_f64().unwrap();
-                canvas_elm.set_width( width  as u32);
-                canvas_elm.set_height(height as u32);
+                canvas_element.set_width( width  as u32);
+                canvas_element.set_height(height as u32);
                 true  // rerender
             }
         }
