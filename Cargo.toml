@@ -60,7 +60,7 @@ png = "=0.17.9"
 num-complex = "0.4"
 structopt = "0.3.26"
 strum_macros = "0.24.1"
-wasm-bindgen = "0.2.81"
+wasm-bindgen = "0.2.88"
 wee_alloc = "0.4.5"
 yew = { git = "https://github.com/yewstack/yew/", features = ["csr"] }
 
