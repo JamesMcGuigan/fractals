@@ -15,11 +15,11 @@ pub fn julia_set_canvas(
     ctx: &CanvasRenderingContext2d,
     width: u32,
     height: u32,
-    real: f32,
-    imag: f32,
-    center_re: f32,
-    center_im: f32,
-    radius: f32,
+    real: f64,
+    imag: f64,
+    center_re: f64,
+    center_im: f64,
+    radius: f64,
     limit: u32,
     colorscheme: ColorScheme,  // prevents #[wasm_bindgen]
 ) {
@@ -44,21 +44,21 @@ pub fn julia_set_canvas(
     ctx.put_image_data(&data_clamped, 0.0, 0.0).ok();
 }
 
-pub fn julia_set(c: Complex<f32>, width: u32, height: u32, center_re: f32, center_im: f32, radius: f32, limit: u32) -> Vec<u32> {
+pub fn julia_set(c: Complex<f64>, width: u32, height: u32, center_re: f64, center_im: f64, radius: f64, limit: u32) -> Vec<u32> {
     let capacity = (width * height) as usize;
     let mut data = Vec::<u32>::with_capacity(capacity);
 
     // Center the Julia set in the middle of the screen
-    let min_side = std::cmp::min(width, height) as f32;
+    let min_side = std::cmp::min(width, height) as f64;
     let scale    = 2. * radius / min_side;
-    let offset_x = width  as f32 / 2.;
-    let offset_y = height as f32 / 2.;
+    let offset_x = width  as f64 / 2.;
+    let offset_y = height as f64 / 2.;
 
     for y in 0..height {
         for x in 0..width {
             let z = Complex {
-                re: (y as f32 - offset_y) * scale + center_re,
-                im: (x as f32 - offset_x) * scale + center_im,
+                re: (y as f64 - offset_y) * scale + center_re,
+                im: (x as f64 - offset_x) * scale + center_im,
             };
             let value = julia_value(z, c, limit);
             data.push(value);
@@ -67,7 +67,7 @@ pub fn julia_set(c: Complex<f32>, width: u32, height: u32, center_re: f32, cente
     data
 }
 
-pub fn julia_value(z: Complex<f32>, c: Complex<f32>, limit: u32) -> u32 {
+pub fn julia_value(z: Complex<f64>, c: Complex<f64>, limit: u32) -> u32 {
     let mut iter_index: u32 = 0;
     let mut z = z;
     while iter_index < limit {

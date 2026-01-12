@@ -14,10 +14,10 @@ use crate::services::timer::now;
 
 #[derive(Debug)]
 pub struct Fractal {
-    _z: Complex<f32>,
-    c:  Complex<f32>,
-    center: Complex<f32>,
-    zoom: f32,
+    _z: Complex<f64>,
+    c:  Complex<f64>,
+    center: Complex<f64>,
+    zoom: f64,
     limit: u32,
     colorscheme: ColorScheme,
     node_canvas: NodeRef,
@@ -29,9 +29,9 @@ pub struct Fractal {
 pub enum Msg {
     Resize,
     Color(ColorScheme),
-    CRe(f32),
-    CIm(f32),
-    Zoom(f32),
+    CRe(f64),
+    CIm(f64),
+    Zoom(f64),
     MouseDown(i32, i32),
     MouseMove(i32, i32),
     MouseUp,
@@ -110,20 +110,20 @@ impl Component for Fractal {
                             .expect("HtmlCanvasElement");
                         let width = canvas_element.width();
                         let height = canvas_element.height();
-                        let min_side = std::cmp::min(width, height) as f32;
+                        let min_side = std::cmp::min(width, height) as f64;
                         let scale = 2. * self.zoom / min_side;
 
                         // Panning logic: move center in opposite direction of mouse movement
                         // Coordinate mapping: re: (y - offset_y) * scale + center_re
                         // So dy in pixels corresponds to dy * scale in complex plane for 're' (y maps to re in julia_set??)
                         // Wait, looking at julia_set:
-                        // re: (y as f32 - offset_y) * scale + center_re,
-                        // im: (x as f32 - offset_x) * scale + center_im,
+                        // re: (y as f64 - offset_y) * scale + center_re,
+                        // im: (x as f64 - offset_x) * scale + center_im,
                         // This means 'y' (vertical) maps to 're' and 'x' (horizontal) maps to 'im'.
                         // Usually it's the other way around, but I'll stick to the existing implementation.
 
-                        self.center.re -= dy as f32 * scale;
-                        self.center.im -= dx as f32 * scale;
+                        self.center.re -= dy as f64 * scale;
+                        self.center.im -= dx as f64 * scale;
 
                         self.last_mouse_pos = Some((x, y));
                         return true;
@@ -133,14 +133,14 @@ impl Component for Fractal {
             }
             Msg::Wheel(delta_y) => {
                 // delta_y is positive for scrolling down (zoom out), negative for scrolling up (zoom in)
-                let zoom_factor = 1.1f32;
+                let zoom_factor = 1.1f64;
                 if delta_y > 0.0 {
                     self.zoom *= zoom_factor;
                 } else if delta_y < 0.0 {
                     self.zoom /= zoom_factor;
                 }
                 // Clamp zoom to reasonable range
-                self.zoom = self.zoom.clamp(0.001, 10.0);
+                self.zoom = self.zoom.clamp(0.000000001, 10.0);
                 true
             }
         }
@@ -202,8 +202,8 @@ impl Component for Fractal {
                     <label><span>{"C Imag: "}{format!("{:.3}", self.c.im)}</span>
                         <input type="range" min="-1" max="1" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input} />
                     </label>
-                    <label><span>{"Zoom: "}{format!("{:.3}", self.zoom)}</span>
-                        <input type="range" min="0.001" max="4" step="0.001" value={self.zoom.to_string()} oninput={on_zoom_input} />
+                    <label><span>{"Zoom: "}{format!("{:.9}", self.zoom)}</span>
+                        <input type="range" min="0.000000001" max="4" step="0.000000001" value={self.zoom.to_string()} oninput={on_zoom_input} />
                     </label>
                 </div>
             </div>

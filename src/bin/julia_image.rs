@@ -17,9 +17,9 @@ struct Opt {
     #[structopt(short, long, default_value="fractal.png")]
     output: String,
     #[structopt(short, long, default_value="0.5+0.5i")]
-    c: Complex<f32>,
+    c: Complex<f64>,
     #[structopt(short, long, default_value="2.0")]
-    radius: f32,
+    radius: f64,
     #[structopt(short, long, default_value="64")]
     limit: u32,
     #[structopt(short, long, default_value="640")]
