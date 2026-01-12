@@ -26,6 +26,9 @@ pub struct Fractal {
 pub enum Msg {
     Resize,
     Color(ColorScheme),
+    CRe(f32),
+    CIm(f32),
+    Zoom(f32),
 }
 
 impl Component for Fractal {
@@ -64,6 +67,18 @@ impl Component for Fractal {
                 canvas_element.set_height(height as u32);
                 true  // rerender
             }
+            Msg::CRe(re) => {
+                self.c.re = re;
+                true
+            }
+            Msg::CIm(im) => {
+                self.c.im = im;
+                true
+            }
+            Msg::Zoom(zoom) => {
+                self.zoom = zoom;
+                true
+            }
         }
     }
 
@@ -73,6 +88,18 @@ impl Component for Fractal {
         let colorscheme_onchange = ctx.link().callback(|color: String|
             Msg::Color(ColorScheme::from_string(color))
         );
+        let on_cre_input = ctx.link().callback(|e: InputEvent| {
+            let input: web_sys::HtmlInputElement = e.target_unchecked_into();
+            Msg::CRe(input.value().parse().unwrap_or(0.0))
+        });
+        let on_cim_input = ctx.link().callback(|e: InputEvent| {
+            let input: web_sys::HtmlInputElement = e.target_unchecked_into();
+            Msg::CIm(input.value().parse().unwrap_or(0.0))
+        });
+        let on_zoom_input = ctx.link().callback(|e: InputEvent| {
+            let input: web_sys::HtmlInputElement = e.target_unchecked_into();
+            Msg::Zoom(input.value().parse().unwrap_or(1.0))
+        });
         html! {
             <div class="fractal">
                 <canvas id="mandelbrot" ref={self.node_canvas.clone()}/>
@@ -82,6 +109,15 @@ impl Component for Fractal {
                         selected={ self.colorscheme.to_string() }
                         onchange={ colorscheme_onchange }
                     />
+                    <label><span>{"C Real: "}{format!("{:.3}", self.c.re)}</span>
+                        <input type="range" min="-1" max="1" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input} />
+                    </label>
+                    <label><span>{"C Imag: "}{format!("{:.3}", self.c.im)}</span>
+                        <input type="range" min="-1" max="1" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input} />
+                    </label>
+                    <label><span>{"Zoom: "}{format!("{:.3}", self.zoom)}</span>
+                        <input type="range" min="0.001" max="4" step="0.001" value={self.zoom.to_string()} oninput={on_zoom_input} />
+                    </label>
                 </div>
             </div>
         }
