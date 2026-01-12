@@ -46,7 +46,7 @@ impl Component for Fractal {
         log!("Fractal::create()");
         Self {
             _z: Complex::new(0.0,0.0),
-            c:  Complex::new(0.25,0.25),
+            c:  Complex::new(-1.0,0.0),
             center: Complex::new(0.0, 0.0),
             zoom: 2.0,
             limit: 32,
@@ -196,13 +196,16 @@ impl Component for Fractal {
                         selected={ self.colorscheme.to_string() }
                         onchange={ colorscheme_onchange }
                     />
-                    <label><span>{"C Real: "}{format!("{:.3}", self.c.re)}</span>
+                    <label><span>{"C Real: "}</span>
+                        <input type="number" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input.clone()} />
                         <input type="range" min="-1" max="1" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input} />
                     </label>
-                    <label><span>{"C Imag: "}{format!("{:.3}", self.c.im)}</span>
+                    <label><span>{"C Imag: "}</span>
+                        <input type="number" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input.clone()} />
                         <input type="range" min="-1" max="1" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input} />
                     </label>
-                    <label><span>{"Zoom: "}{format!("{:.9}", self.zoom)}</span>
+                    <label><span>{"Zoom: "}</span>
+                        <input type="number" step="0.000000001" value={self.zoom.to_string()} oninput={on_zoom_input.clone()} />
                         <input type="range" min="0.000000001" max="4" step="0.000000001" value={self.zoom.to_string()} oninput={on_zoom_input} />
                     </label>
                 </div>

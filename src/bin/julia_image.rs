@@ -16,7 +16,7 @@ use fractals::services::vectors::{map_colorscheme, vec_u32_to_u8, vec_u8_rgba_to
 struct Opt {
     #[structopt(short, long, default_value="fractal.png")]
     output: String,
-    #[structopt(short, long, default_value="0.5+0.5i")]
+    #[structopt(short, long, default_value="-1.0+0.0i")]
     c: Complex<f64>,
     #[structopt(short, long, default_value="2.0")]
     radius: f64,
