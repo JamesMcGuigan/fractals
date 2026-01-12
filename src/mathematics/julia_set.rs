@@ -17,13 +17,15 @@ pub fn julia_set_canvas(
     height: u32,
     real: f32,
     imag: f32,
+    center_re: f32,
+    center_im: f32,
     radius: f32,
     limit: u32,
     colorscheme: ColorScheme,  // prevents #[wasm_bindgen]
 ) {
     // The real workhorse of this algorithm, generating pixel data
     let c = Complex::new(real, imag);
-    let data_julia: Vec<u32> = julia_set(c, width, height, radius, limit);
+    let data_julia: Vec<u32> = julia_set(c, width, height, center_re, center_im, radius, limit);
     let data_color: Vec<u32> = map_colorscheme(&data_julia, colorscheme);
     let data_color_u8: Vec<u8> = vec_u32_to_u8(&data_color);
     let data_clamped = ImageData::new_with_u8_clamped_array_and_sh(
@@ -42,7 +44,7 @@ pub fn julia_set_canvas(
     ctx.put_image_data(&data_clamped, 0.0, 0.0).ok();
 }
 
-pub fn julia_set(c: Complex<f32>, width: u32, height: u32, radius: f32, limit: u32) -> Vec<u32> {
+pub fn julia_set(c: Complex<f32>, width: u32, height: u32, center_re: f32, center_im: f32, radius: f32, limit: u32) -> Vec<u32> {
     let capacity = (width * height) as usize;
     let mut data = Vec::<u32>::with_capacity(capacity);
 
@@ -55,8 +57,8 @@ pub fn julia_set(c: Complex<f32>, width: u32, height: u32, radius: f32, limit: u
     for y in 0..height {
         for x in 0..width {
             let z = Complex {
-                re: (y as f32 - offset_y) * scale,
-                im: (x as f32 - offset_x) * scale,
+                re: (y as f32 - offset_y) * scale + center_re,
+                im: (x as f32 - offset_x) * scale + center_im,
             };
             let value = julia_value(z, c, limit);
             data.push(value);
