@@ -50,7 +50,7 @@ impl Component for Fractal {
             center: Complex::new(0.0, 0.0),
             zoom: 2.0,
             limit: 32,
-            colorscheme: ColorScheme::Ultra,
+            colorscheme: ColorScheme::Green,
             node_canvas: NodeRef::default(),
             listener: None,
             is_dragging: false,
