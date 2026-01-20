@@ -32,6 +32,7 @@ pub enum Msg {
     CRe(f64),
     CIm(f64),
     Zoom(f64),
+    Limit(u32),
     MouseDown(i32, i32),
     MouseMove(i32, i32),
     MouseUp,
@@ -89,6 +90,10 @@ impl Component for Fractal {
                 self.zoom = zoom;
                 true
             }
+            Msg::Limit(limit) => {
+                self.limit = limit;
+                true
+            }
             Msg::MouseDown(x, y) => {
                 self.is_dragging = true;
                 self.last_mouse_pos = Some((x, y));
@@ -140,7 +145,7 @@ impl Component for Fractal {
                     self.zoom /= zoom_factor;
                 }
                 // Clamp zoom to reasonable range
-                self.zoom = self.zoom.clamp(0.000000001, 10.0);
+                self.zoom = self.zoom.clamp(1e-15, 10.0);
                 true
             }
         }
@@ -163,6 +168,10 @@ impl Component for Fractal {
         let on_zoom_input = ctx.link().callback(|e: InputEvent| {
             let input: web_sys::HtmlInputElement = e.target_unchecked_into();
             Msg::Zoom(input.value().parse().unwrap_or(1.0))
+        });
+        let on_limit_input = ctx.link().callback(|e: InputEvent| {
+            let input: web_sys::HtmlInputElement = e.target_unchecked_into();
+            Msg::Limit(input.value().parse().unwrap_or(32))
         });
 
         let on_mousedown = ctx.link().callback(|e: MouseEvent| {
@@ -205,8 +214,12 @@ impl Component for Fractal {
                         <input type="range" min="-1" max="1" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input} />
                     </label>
                     <label><span>{"Zoom: "}</span>
-                        <input type="number" step="0.000000001" value={self.zoom.to_string()} oninput={on_zoom_input.clone()} />
-                        <input type="range" min="0.000000001" max="4" step="0.000000001" value={self.zoom.to_string()} oninput={on_zoom_input} />
+                        <input type="number" step="1e-15" value={self.zoom.to_string()} oninput={on_zoom_input.clone()} />
+                        <input type="range" min="1e-15" max="4" step="1e-15" value={self.zoom.to_string()} oninput={on_zoom_input} />
+                    </label>
+                    <label><span>{"Limit: "}</span>
+                        <input type="number" step="1" value={self.limit.to_string()} oninput={on_limit_input.clone()} />
+                        <input type="range" min="1" max="10000" step="1" value={self.limit.to_string()} oninput={on_limit_input} />
                     </label>
                 </div>
             </div>
