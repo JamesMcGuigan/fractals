@@ -33,7 +33,7 @@ impl ColorScheme {
     /// Return a u32 rgba color from the selected ColorScheme
     #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
     #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-    pub fn color(&self, percentage: f32) -> u32 {
+    pub fn color(&self, percentage: f64) -> u32 {
         match self {
             ColorScheme::HSL       => colorscheme_hsl(percentage),
             ColorScheme::Grayscale => colorscheme_grayscale(percentage),
@@ -75,23 +75,23 @@ impl ColorScheme {
 
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-fn colorscheme_hsl(percentage: f32) -> u32 {
-    hsl_to_u32(360. * percentage, 100., 50.)
+fn colorscheme_hsl(percentage: f64) -> u32 {
+    hsl_to_u32(360. * percentage as f32, 100., 50.)
 }
 
 
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-fn colorscheme_grayscale(percentage: f32) -> u32 {
+fn colorscheme_grayscale(percentage: f64) -> u32 {
     if      percentage == 0.0 { WHITE }
     else if percentage == 1.0 { BLACK }
-    else {  grayscale_to_u32(percentage) }
+    else {  grayscale_to_u32(percentage as f32) }
 }
 
 
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-fn colorscheme_green(percentage: f32) -> u32 {
+fn colorscheme_green(percentage: f64) -> u32 {
     // Source: https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
     let color: u8 = (255. * percentage) as u8;
     if percentage > 0.5 {
@@ -104,7 +104,7 @@ fn colorscheme_green(percentage: f32) -> u32 {
 
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-fn colorscheme_ultra(percentage: f32) -> u32 {
+fn colorscheme_ultra(percentage: f64) -> u32 {
     // Source: https://stackoverflow.com/questions/16500656/which-color-gradient-is-used-to-color-mandelbrot-in-wikipedia
     let pallet = vec![
         (0, 0, 0),
@@ -132,11 +132,11 @@ fn colorscheme_ultra(percentage: f32) -> u32 {
 
 #[requires(percentage >= 0.0, "1.0 >= percentage >= 0.0")]
 #[requires(percentage <= 1.0, "1.0 >= percentage >= 0.0")]
-fn colorscheme_palette(percentage: f32, pallet: &Vec<(u8, u8, u8)>) -> u32 {
+fn colorscheme_palette(percentage: f64, pallet: &Vec<(u8, u8, u8)>) -> u32 {
     let index: usize =
         if      percentage == 0.0 { 0 }
         else if percentage == 1.0 { pallet.len() - 1 }
-        else    { (1. + (percentage * (pallet.len() - 2) as f32)) as usize }
+        else    { (1. + (percentage * (pallet.len() - 2) as f64)) as usize }
     ;
     let color = pallet[index];
     rbga_to_u32(color.0,color.1, color.2, 255)

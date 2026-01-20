@@ -36,11 +36,11 @@ pub fn vec_u8_rgba_to_rgb(rgba: &[u8]) -> Vec<u8> {
 
 /// Map colorscheme.color(percentage) over &data
 pub fn map_colorscheme(data: &[f64], colorscheme: ColorScheme) -> Vec<u32> {
-    let max = *data.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap_or(&1.0) as f32;
+    let max = *data.iter().max_by(|a, b| a.partial_cmp(b).unwrap()).unwrap_or(&1.0);
     let output32 = data.iter()
         .map(|x| {
-            // log!(*x, colorscheme((*x) as f32 / max));
-            let percentage = *x as f32 / max;
+            // log!(*x, colorscheme((*x) / max));
+            let percentage = *x / max;
             colorscheme.color(percentage)
         })
         .collect::<Vec<u32>>();

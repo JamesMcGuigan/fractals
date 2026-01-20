@@ -163,8 +163,8 @@ impl Component for Fractal {
                 } else if delta_y < 0.0 {
                     self.zoom /= zoom_factor;
                 }
-                // Clamp zoom to reasonable range
-                self.zoom = self.zoom.clamp(1e-15, 10.0);
+                // Clamp zoom to reasonable range for f64 precision
+                self.zoom = self.zoom.clamp(1e-16, 10.0);
                 true
             }
         }
@@ -190,7 +190,12 @@ impl Component for Fractal {
         });
         let on_zoom_input = ctx.link().callback(|e: InputEvent| {
             let input: web_sys::HtmlInputElement = e.target_unchecked_into();
-            Msg::Zoom(input.value().parse().unwrap_or(1.0))
+            let val = input.value().parse::<f64>().unwrap_or(1.0);
+            if input.type_() == "range" {
+                Msg::Zoom(10f64.powf(val))
+            } else {
+                Msg::Zoom(val)
+            }
         });
         let on_limit_input = ctx.link().callback(|e: InputEvent| {
             let input: web_sys::HtmlInputElement = e.target_unchecked_into();
@@ -248,8 +253,8 @@ impl Component for Fractal {
                         }
                     } else { html! {} } }
                     <label><span>{"Zoom: "}</span>
-                        <input type="number" step="1e-15" value={self.zoom.to_string()} oninput={on_zoom_input.clone()} />
-                        <input type="range" min="1e-15" max="4" step="1e-15" value={self.zoom.to_string()} oninput={on_zoom_input} />
+                        <input type="number" step="any" value={self.zoom.to_string()} oninput={on_zoom_input.clone()} />
+                        <input type="range" min="-15" max="1" step="0.01" value={self.zoom.log10().to_string()} oninput={on_zoom_input} />
                     </label>
                     <label><span>{"Limit: "}</span>
                         <input type="number" step="1" value={self.limit.to_string()} oninput={on_limit_input.clone()} />
