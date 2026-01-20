@@ -9,11 +9,27 @@ use yew::prelude::*;
 use crate::components::select::Select;
 use crate::elements;
 use crate::mathematics::julia_set::julia_set_canvas;
+use crate::mathematics::mandelbrot::mandelbrot_set_canvas;
 use crate::services::colorschemes::ColorScheme;
 use crate::services::timer::now;
 
+#[derive(Copy, Clone, Debug, PartialEq, Eq, strum_macros::Display, enum_utils::IterVariants, enum_utils::FromStr)]
+pub enum FractalType {
+    Julia,
+    Mandelbrot,
+}
+
+impl FractalType {
+    pub fn values() -> Vec<String> {
+        FractalType::iter()
+            .map(|f| f.to_string())
+            .collect()
+    }
+}
+
 #[derive(Debug)]
 pub struct Fractal {
+    fractal_type: FractalType,
     _z: Complex<f64>,
     c:  Complex<f64>,
     center: Complex<f64>,
@@ -28,6 +44,7 @@ pub struct Fractal {
 
 pub enum Msg {
     Resize,
+    Type(FractalType),
     Color(ColorScheme),
     CRe(f64),
     CIm(f64),
@@ -46,6 +63,7 @@ impl Component for Fractal {
     fn create(_ctx: &Context<Self>) -> Self {
         log!("Fractal::create()");
         Self {
+            fractal_type: FractalType::Mandelbrot,
             _z: Complex::new(0.0,0.0),
             c:  Complex::new(-1.0,0.0),
             center: Complex::new(0.0, 0.0),
@@ -62,6 +80,10 @@ impl Component for Fractal {
     fn update(&mut self, _ctx: &Context<Self>, msg: Self::Message) -> bool {
         log!("Fractal::update()");
         match msg {
+            Msg::Type(fractal_type) => {
+                self.fractal_type = fractal_type;
+                true
+            },
             Msg::Color(colorscheme) => {
                 self.colorscheme = colorscheme;
                 true  // rerender
@@ -119,16 +141,13 @@ impl Component for Fractal {
                         let scale = 2. * self.zoom / min_side;
 
                         // Panning logic: move center in opposite direction of mouse movement
-                        // Coordinate mapping: re: (y - offset_y) * scale + center_re
-                        // So dy in pixels corresponds to dy * scale in complex plane for 're' (y maps to re in julia_set??)
-                        // Wait, looking at julia_set:
-                        // re: (y as f64 - offset_y) * scale + center_re,
-                        // im: (x as f64 - offset_x) * scale + center_im,
-                        // This means 'y' (vertical) maps to 're' and 'x' (horizontal) maps to 'im'.
-                        // Usually it's the other way around, but I'll stick to the existing implementation.
+                        // Coordinate mapping: 
+                        // re: (x - offset_x) * scale + center_re
+                        // im: (y - offset_y) * scale + center_im
+                        // This means 'x' (horizontal) maps to 're' and 'y' (vertical) maps to 'im'.
 
-                        self.center.re -= dy as f64 * scale;
-                        self.center.im -= dx as f64 * scale;
+                        self.center.re -= dx as f64 * scale;
+                        self.center.im -= dy as f64 * scale;
 
                         self.last_mouse_pos = Some((x, y));
                         return true;
@@ -157,6 +176,10 @@ impl Component for Fractal {
         let colorscheme_onchange = ctx.link().callback(|color: String|
             Msg::Color(ColorScheme::from_string(color))
         );
+        let fractal_type_onchange = ctx.link().callback(|fractal_type: String| {
+            use std::str::FromStr;
+            Msg::Type(FractalType::from_str(&fractal_type).unwrap_or(FractalType::Julia))
+        });
         let on_cre_input = ctx.link().callback(|e: InputEvent| {
             let input: web_sys::HtmlInputElement = e.target_unchecked_into();
             Msg::CRe(input.value().parse().unwrap_or(0.0))
@@ -201,18 +224,29 @@ impl Component for Fractal {
                 />
                 <div class="controls">
                     <Select
+                        options={  FractalType::values() }
+                        selected={ self.fractal_type.to_string() }
+                        onchange={ fractal_type_onchange }
+                    />
+                    <Select
                         options={  ColorScheme::values() }
                         selected={ self.colorscheme.to_string() }
                         onchange={ colorscheme_onchange }
                     />
-                    <label><span>{"C Real: "}</span>
-                        <input type="number" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input.clone()} />
-                        <input type="range" min="-1" max="1" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input} />
-                    </label>
-                    <label><span>{"C Imag: "}</span>
-                        <input type="number" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input.clone()} />
-                        <input type="range" min="-1" max="1" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input} />
-                    </label>
+                    { if self.fractal_type == FractalType::Julia {
+                        html! {
+                            <>
+                                <label><span>{"C Real: "}</span>
+                                    <input type="number" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input.clone()} />
+                                    <input type="range" min="-1" max="1" step="0.001" value={self.c.re.to_string()} oninput={on_cre_input} />
+                                </label>
+                                <label><span>{"C Imag: "}</span>
+                                    <input type="number" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input.clone()} />
+                                    <input type="range" min="-1" max="1" step="0.001" value={self.c.im.to_string()} oninput={on_cim_input} />
+                                </label>
+                            </>
+                        }
+                    } else { html! {} } }
                     <label><span>{"Zoom: "}</span>
                         <input type="number" step="1e-15" value={self.zoom.to_string()} oninput={on_zoom_input.clone()} />
                         <input type="range" min="1e-15" max="4" step="1e-15" value={self.zoom.to_string()} oninput={on_zoom_input} />
@@ -250,15 +284,29 @@ impl Component for Fractal {
                 elements::canvas_context_2d(&canvas_element)
                 .unwrap();
 
-            julia_set_canvas(
-                &canvas_ctx,
-                width, height,
-                self.c.re, self.c.im,
-                self.center.re, self.center.im,
-                self.zoom,
-                self.limit,
-                self.colorscheme,
-            );
+            match self.fractal_type {
+                FractalType::Julia => {
+                    julia_set_canvas(
+                        &canvas_ctx,
+                        width, height,
+                        self.c.re, self.c.im,
+                        self.center.re, self.center.im,
+                        self.zoom,
+                        self.limit,
+                        self.colorscheme,
+                    );
+                }
+                FractalType::Mandelbrot => {
+                    mandelbrot_set_canvas(
+                        &canvas_ctx,
+                        width, height,
+                        self.center.re, self.center.im,
+                        self.zoom,
+                        self.limit,
+                        self.colorscheme,
+                    );
+                }
+            }
         }
 
         let _time_taken = (now() - time_start) / 1000.0;

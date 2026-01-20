@@ -57,8 +57,8 @@ pub fn julia_set(c: Complex<f64>, width: u32, height: u32, center_re: f64, cente
     for y in 0..height {
         for x in 0..width {
             let z = Complex {
-                re: (y as f64 - offset_y) * scale + center_re,
-                im: (x as f64 - offset_x) * scale + center_im,
+                re: (x as f64 - offset_x) * scale + center_re,
+                im: (y as f64 - offset_y) * scale + center_im,
             };
             let value = julia_value(z, c, limit);
             data.push(value);
