@@ -53,7 +53,7 @@ pub enum Msg {
     MouseDown(i32, i32),
     MouseMove(i32, i32),
     MouseUp,
-    Wheel(f64),
+    Wheel(f64, i32, i32),
 }
 
 impl Component for Fractal {
@@ -155,9 +155,11 @@ impl Component for Fractal {
                 }
                 false
             }
-            Msg::Wheel(delta_y) => {
+            Msg::Wheel(delta_y, x, y) => {
                 // delta_y is positive for scrolling down (zoom out), negative for scrolling up (zoom in)
                 let zoom_factor = 1.1f64;
+                let old_zoom = self.zoom;
+
                 if delta_y > 0.0 {
                     self.zoom *= zoom_factor;
                 } else if delta_y < 0.0 {
@@ -165,6 +167,26 @@ impl Component for Fractal {
                 }
                 // Clamp zoom to reasonable range for f64 precision
                 self.zoom = self.zoom.clamp(1e-16, 10.0);
+
+                // Zoom to mouse logic
+                let canvas_element = self.node_canvas
+                    .cast::<web_sys::HtmlCanvasElement>()
+                    .expect("HtmlCanvasElement");
+                let width = canvas_element.width();
+                let height = canvas_element.height();
+                let min_side = std::cmp::min(width, height) as f64;
+                let offset_x = width as f64 / 2.;
+                let offset_y = height as f64 / 2.;
+
+                let old_scale = 2. * old_zoom / min_side;
+                let new_scale = 2. * self.zoom / min_side;
+
+                // Adjust center so that the point under the mouse (x, y) stays the same in complex plane
+                // P_complex = (pixel - offset) * scale + center
+                // center_new = center_old + (pixel - offset) * (scale_old - scale_new)
+                self.center.re += (x as f64 - offset_x) * (old_scale - new_scale);
+                self.center.im += (y as f64 - offset_y) * (old_scale - new_scale);
+
                 true
             }
         }
@@ -213,7 +235,7 @@ impl Component for Fractal {
         });
         let on_wheel = ctx.link().callback(|e: WheelEvent| {
             e.prevent_default(); // Prevent page scroll
-            Msg::Wheel(e.delta_y())
+            Msg::Wheel(e.delta_y(), e.client_x(), e.client_y())
         });
 
         html! {
